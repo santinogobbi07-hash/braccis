@@ -1,0 +1,511 @@
+/* ============================================================
+   Braccis - hoja de estilos principal
+   Paleta, tipografia y componentes compartidos por todo el sitio
+   ============================================================ */
+
+:root {
+  /* Colores */
+  --crema:      #faf7f2;
+  --crema-alt:  #f2ece3;
+  --tinta:      #1f1b18;
+  --tinta-soft: #554c45;
+  --linea:      #e3dbd0;
+  --acento:     #98583e;   /* terracota (oscurecido para que el texto
+                              chico llegue al contraste minimo AA) */
+  --acento-osc: #8a4f38;
+  --blanco:     #ffffff;
+
+  /* Tipografia */
+  --display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --texto:   "Inter", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Medidas */
+  --ancho:   1200px;
+  --radio:   2px;
+  --sombra:  0 12px 32px rgba(31, 27, 24, .10);
+  --trans:   .25s ease;
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+body, h1, h2, h3, h4, p, figure, ul, ol { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+input, select, textarea { font: inherit; color: inherit; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--texto);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--tinta);
+  background: var(--crema);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Utilidades ---------- */
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+.seccion { padding-block: 96px; }
+.seccion--alt { background: var(--crema-alt); }
+
+.titulo-seccion {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -.01em;
+}
+
+.antetitulo {
+  font-size: .75rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--acento);
+  margin-bottom: 14px;
+}
+
+.bajada {
+  color: var(--tinta-soft);
+  max-width: 58ch;
+  margin-top: 18px;
+}
+
+.centrado { text-align: center; }
+.centrado .bajada { margin-inline: auto; }
+
+/* ---------- Botones ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 30px;
+  border-radius: var(--radio);
+  font-size: .82rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  transition: var(--trans);
+  border: 1px solid transparent;
+}
+.btn--primario { background: var(--tinta); color: var(--crema); }
+.btn--primario:hover { background: var(--acento); }
+.btn--linea { border-color: var(--tinta); color: var(--tinta); }
+.btn--linea:hover { background: var(--tinta); color: var(--crema); }
+.btn--wsp { background: #0f7c3b; color: #fff; }
+.btn--wsp:hover { background: #0d7035; }
+
+/* ---------- Header ---------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(250, 247, 242, .92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--linea);
+}
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 74px;
+}
+/* El logo es la imagen sacada del catalogo (img/logo.png).
+   Se cambia el alto y listo, el ancho se ajusta solo. */
+.logo { display: inline-block; line-height: 0; }
+.logo img { height: 26px; width: auto; }
+.footer .logo img { height: 30px; }
+
+/* Fallback: si algun dia se saca la imagen, el texto sigue funcionando */
+.logo--texto {
+  font-family: var(--display);
+  font-size: 1.65rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.nav__lista { display: flex; gap: 34px; }
+.nav__link {
+  font-size: .8rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding-block: 6px;
+  position: relative;
+}
+.nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 0; height: 1px;
+  background: var(--acento);
+  transition: var(--trans);
+}
+.nav__link:hover::after,
+.nav__link[aria-current="page"]::after { width: 100%; }
+
+/* Boton hamburguesa (solo movil) */
+.hamburguesa { display: none; width: 26px; height: 18px; position: relative; }
+.hamburguesa span {
+  position: absolute; left: 0;
+  width: 100%; height: 1.5px;
+  background: var(--tinta);
+  transition: var(--trans);
+}
+.hamburguesa span:nth-child(1) { top: 0; }
+.hamburguesa span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.hamburguesa span:nth-child(3) { bottom: 0; }
+.hamburguesa[aria-expanded="true"] span:nth-child(1) { top: 50%; transform: rotate(45deg); }
+.hamburguesa[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hamburguesa[aria-expanded="true"] span:nth-child(3) { bottom: auto; top: 50%; transform: rotate(-45deg); }
+
+/* ---------- Hero ---------- */
+.hero {
+  min-height: 78vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding-block: 110px;
+  /* Para cambiar la foto de portada, reemplazar la ruta de url() */
+  background:
+    linear-gradient(rgba(31,27,24,.42), rgba(31,27,24,.52)),
+    url("../img/prendas/jeans-cird.jpg") center 6% / cover no-repeat,
+    var(--tinta-soft);
+  color: var(--crema);
+}
+.hero__antetitulo {
+  font-size: .75rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(250, 247, 242, .8);
+  margin-bottom: 20px;
+}
+.hero__titulo {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: -.02em;
+}
+.hero__bajada {
+  margin: 22px auto 36px;
+  max-width: 52ch;
+  font-size: 1.05rem;
+  color: rgba(250, 247, 242, .9);
+}
+.hero__acciones { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.hero .btn--linea { border-color: var(--crema); color: var(--crema); }
+.hero .btn--linea:hover { background: var(--crema); color: var(--tinta); }
+
+/* ---------- Grilla de categorias ---------- */
+.grilla-categorias {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 52px;
+}
+.categoria {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--crema-alt);
+  display: block;
+}
+.categoria img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.categoria:hover img { transform: scale(1.05); }
+.categoria__etiqueta {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 22px;
+  background: linear-gradient(transparent, rgba(31,27,24,.75));
+  color: var(--crema);
+  font-family: var(--display);
+  font-size: 1.5rem;
+}
+
+/* ---------- Catalogo ---------- */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding-block: 28px;
+  border-bottom: 1px solid var(--linea);
+}
+.filtros__grupo { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 9px 18px;
+  border: 1px solid var(--linea);
+  border-radius: 999px;
+  font-size: .8rem;
+  letter-spacing: .06em;
+  background: var(--blanco);
+  transition: var(--trans);
+}
+.chip:hover { border-color: var(--tinta); }
+.chip[aria-pressed="true"] { background: var(--tinta); color: var(--crema); border-color: var(--tinta); }
+
+.buscador {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--linea);
+  background: var(--blanco);
+  padding: 10px 16px;
+  min-width: 240px;
+}
+.buscador input { border: none; outline: none; width: 100%; background: transparent; font-size: .9rem; }
+
+.contador {
+  padding-block: 22px;
+  font-size: .85rem;
+  color: var(--tinta-soft);
+}
+
+.grilla-productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 32px 24px;
+  padding-bottom: 80px;
+}
+
+.producto { cursor: pointer; }
+.producto__figura {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: var(--crema-alt);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.producto__figura img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.producto:hover .producto__figura img { transform: scale(1.04); }
+.producto__placeholder {
+  width: 100%; height: 100%;
+  display: grid; place-items: center;
+  font-family: var(--display);
+  font-size: 2.4rem;
+  color: #cfc4b5;
+  background: repeating-linear-gradient(45deg, var(--crema-alt) 0 12px, #ece5da 12px 24px);
+}
+.producto__nombre { font-family: var(--display); font-size: 1.3rem; line-height: 1.2; }
+.producto__codigo { font-size: .72rem; letter-spacing: .12em; color: var(--tinta-soft); text-transform: uppercase; margin-top: 4px; }
+.producto__precio { margin-top: 8px; font-size: .95rem; }
+.producto__colores { display: flex; gap: 6px; margin-top: 10px; min-height: 15px; }
+
+/* Cada bolita es el circulito recortado del catalogo, no un color plano */
+.punto-color {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1px solid var(--linea);
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+
+/* Lista de colores dentro de la ficha */
+.colores-lista { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.color-item { display: inline-flex; align-items: center; gap: 6px; }
+
+.vacio { padding: 80px 0; text-align: center; color: var(--tinta-soft); }
+
+/* ---------- Modal de producto ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  place-items: center;
+  padding: 24px;
+  background: rgba(31, 27, 24, .55);
+}
+.modal.abierto { display: grid; }
+.modal__caja {
+  background: var(--crema);
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  box-shadow: var(--sombra);
+}
+.modal__cerrar {
+  position: absolute;
+  top: 14px; right: 16px;
+  font-size: 1.8rem;
+  line-height: 1;
+  z-index: 2;
+}
+.modal__media { background: var(--crema-alt); }
+.modal__figura { background: var(--crema-alt); aspect-ratio: 3/4; }
+.modal__figura img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Tira de miniaturas: la principal mas las fotos de los otros colores */
+.miniaturas {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  overflow-x: auto;
+}
+.miniatura {
+  flex: 0 0 58px;
+  height: 78px;
+  padding: 0;
+  border: 1px solid transparent;
+  background: var(--blanco);
+  opacity: .6;
+  transition: var(--trans);
+}
+.miniatura img { width: 100%; height: 100%; object-fit: cover; }
+.miniatura:hover { opacity: 1; }
+.miniatura[aria-current="true"] { opacity: 1; border-color: var(--tinta); }
+.modal__info { padding: 44px 40px; }
+.modal__nombre { font-family: var(--display); font-size: 2.1rem; line-height: 1.1; }
+.ficha { margin-top: 26px; border-top: 1px solid var(--linea); }
+.ficha__fila { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--linea); font-size: .9rem; }
+.ficha__clave { min-width: 110px; color: var(--tinta-soft); letter-spacing: .06em; text-transform: uppercase; font-size: .72rem; padding-top: 3px; }
+.talles { display: flex; flex-wrap: wrap; gap: 8px; }
+.talle { border: 1px solid var(--linea); padding: 5px 13px; font-size: .8rem; background: var(--blanco); }
+
+/* ---------- Formulario ---------- */
+.form { display: grid; gap: 18px; max-width: 620px; }
+.campo { display: grid; gap: 7px; }
+.campo label { font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--tinta-soft); }
+.campo input, .campo textarea, .campo select {
+  border: 1px solid var(--linea);
+  background: var(--blanco);
+  padding: 13px 15px;
+  border-radius: var(--radio);
+  outline: none;
+  transition: var(--trans);
+}
+.campo input:focus, .campo textarea:focus, .campo select:focus { border-color: var(--acento); }
+.campo textarea { min-height: 140px; resize: vertical; }
+.form__nota { font-size: .82rem; color: var(--tinta-soft); }
+
+/* ---------- Datos de contacto ---------- */
+.datos { display: grid; gap: 26px; }
+.dato__clave { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--acento); margin-bottom: 5px; }
+.dato a:hover { color: var(--acento); }
+
+.dos-columnas {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 64px;
+  align-items: start;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  background: var(--tinta);
+  color: var(--crema-alt);
+  padding-block: 64px 30px;
+}
+.footer a:hover { color: var(--blanco); }
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 44px;
+  border-bottom: 1px solid rgba(250, 247, 242, .16);
+}
+.footer__titulo { font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 18px; color: rgba(250,247,242,.6); }
+.footer__lista { display: grid; gap: 10px; font-size: .92rem; }
+.footer__abajo {
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: .8rem;
+  color: rgba(250, 247, 242, .55);
+}
+
+/* ---------- WhatsApp flotante ---------- */
+.wsp-flotante {
+  position: fixed;
+  right: 22px; bottom: 22px;
+  z-index: 60;
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  background: #0f7c3b;
+  display: grid;
+  place-items: center;
+  box-shadow: var(--sombra);
+  transition: var(--trans);
+}
+.wsp-flotante:hover { transform: scale(1.07); }
+
+/* ---------- Animacion de entrada ---------- */
+.aparece { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+.aparece.visible { opacity: 1; transform: none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .seccion { padding-block: 68px; }
+  .dos-columnas { grid-template-columns: 1fr; gap: 44px; }
+  .modal__caja { grid-template-columns: 1fr; }
+  .modal__figura { aspect-ratio: 4/3; }
+  .modal__info { padding: 30px 26px 40px; }
+  .footer__grid { grid-template-columns: 1fr; gap: 34px; }
+
+  .hamburguesa { display: block; }
+  .nav {
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    background: var(--crema);
+    border-bottom: 1px solid var(--linea);
+    display: none;
+  }
+  .nav.abierta { display: block; }
+  .nav__lista { flex-direction: column; gap: 0; padding: 12px 24px 24px; }
+  .nav__link { padding-block: 14px; border-bottom: 1px solid var(--linea); }
+}
+
+@media (max-width: 560px) {
+  .grilla-productos { grid-template-columns: repeat(2, 1fr); gap: 24px 14px; }
+  .buscador { margin-left: 0; width: 100%; }
+  .btn { padding: 13px 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  .aparece { opacity: 1; transform: none; }
+}
+
+/* ---------- Foco visible al navegar con teclado ---------- */
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+}
+.hero :focus-visible,
+.footer :focus-visible { outline-color: var(--crema); }
+
+/* El boton flotante de WhatsApp se apoya sobre la esquina inferior derecha:
+   se le reserva lugar para que no tape el texto del pie */
+@media (max-width: 1320px) {
+  .footer__abajo { padding-right: 72px; }
+}
+@media (max-width: 560px) {
+  .footer__abajo { padding-right: 0; padding-bottom: 60px; }
+}
+
+/* Campo trampa contra robots de spam: invisible para las personas,
+   pero los robots lo completan igual. Ver contacto.html */
+.trampa {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

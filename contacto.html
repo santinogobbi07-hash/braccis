@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <!-- Reglas de seguridad metidas en la propia pagina.
+       Hacen falta porque GitHub Pages no lee el archivo _headers.
+       Si se publica en Netlify, manda _headers (que ademas agrega
+       proteccion contra iframes y HTTPS forzado, que aca no se pueden). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto | Braccis</title>
+  <meta name="description" content="Escribinos por WhatsApp, mail o completá el formulario. Te respondemos con disponibilidad, talles y precios.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#1f1b18">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header class="header">
+    <div class="contenedor header__inner">
+      <a href="index.html" class="logo"><img src="img/logo.png" alt="Braccis"></a>
+
+      <nav class="nav">
+        <ul class="nav__lista">
+          <li><a class="nav__link" href="index.html">Inicio</a></li>
+          <li><a class="nav__link" href="catalogo.html">Catálogo</a></li>
+          <li><a class="nav__link" href="index.html#nosotros">Nosotros</a></li>
+          <li><a class="nav__link" href="contacto.html" aria-current="page">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <button class="hamburguesa" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ CONTACTO ============ -->
+  <section class="seccion">
+    <div class="contenedor dos-columnas">
+
+      <!-- Columna izquierda: formulario -->
+      <div class="aparece">
+        <p class="antetitulo">Contacto</p>
+        <h1 class="titulo-seccion">Escribinos</h1>
+        <p class="bajada">Contanos qué prenda te interesa y te respondemos a la brevedad.</p>
+
+        <!-- IMPORTANTE: este formulario todavia no envia a ningun lado.
+             Ver README.md > "Formulario de contacto" para conectarlo. -->
+        <form class="form" style="margin-top:36px" data-form>
+          <div class="campo">
+            <label for="nombre">Nombre y apellido</label>
+            <input type="text" id="nombre" name="nombre" required>
+          </div>
+
+          <div class="campo">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+
+          <div class="campo">
+            <label for="telefono">Teléfono (opcional)</label>
+            <input type="tel" id="telefono" name="telefono">
+          </div>
+
+          <div class="campo">
+            <label for="asunto">Motivo</label>
+            <select id="asunto" name="asunto">
+              <option>Consulta por una prenda</option>
+              <option>Disponibilidad y talles</option>
+              <option>Precios</option>
+              <option>Envíos</option>
+              <option>Otro</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" required></textarea>
+          </div>
+
+          <!-- Trampa para robots de spam: es invisible y ninguna persona
+               la completa. Si viene con texto, el envio se descarta.
+               No se toca ni se borra. -->
+          <div class="trampa" aria-hidden="true">
+            <label for="apellido-2">No completar este campo</label>
+            <input type="text" id="apellido-2" name="apellido-2" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button type="submit" class="btn btn--primario">Enviar mensaje</button>
+          <p class="form__nota" data-form-estado></p>
+        </form>
+      </div>
+
+      <!-- Columna derecha: datos directos -->
+      <div class="aparece">
+        <div class="datos">
+          <div class="dato">
+            <p class="dato__clave">WhatsApp</p>
+            <a data-empresa="telefonoVisible" href="#"></a>
+          </div>
+
+          <div class="dato">
+            <p class="dato__clave">Email</p>
+            <a data-empresa="email" href="#"></a>
+          </div>
+
+          <div class="dato">
+            <p class="dato__clave">Instagram</p>
+            <a data-empresa="instagramUsuario" href="#" target="_blank" rel="noopener"></a>
+          </div>
+
+          <div class="dato">
+            <p class="dato__clave">Dirección</p>
+            <p data-empresa="direccion"></p>
+          </div>
+
+          <div class="dato">
+            <p class="dato__clave">Horarios</p>
+            <p data-empresa="horarios"></p>
+          </div>
+
+          <a class="btn btn--wsp" data-wsp href="#">Escribinos por WhatsApp</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="contenedor">
+      <div class="footer__grid">
+        <div>
+          <p class="logo"><img src="img/logo-claro.png" alt="Braccis"></p>
+          <p style="margin-top:14px;max-width:36ch;color:rgba(250,247,242,.7)" data-empresa="descripcionCorta"></p>
+        </div>
+
+        <div>
+          <p class="footer__titulo">Navegación</p>
+          <ul class="footer__lista">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="catalogo.html">Catálogo</a></li>
+            <li><a href="index.html#nosotros">Nosotros</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="footer__titulo">Contacto</p>
+          <ul class="footer__lista">
+            <li><a data-empresa="email" href="#"></a></li>
+            <li><a data-empresa="telefonoVisible" href="#"></a></li>
+            <li><a data-empresa="instagramUsuario" href="#" target="_blank" rel="noopener"></a></li>
+            <li data-empresa="direccion"></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__abajo">
+        <span>&copy; <span data-anio></span> Braccis. Todos los derechos reservados.</span>
+        <span>Primavera–Verano 2027</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="wsp-flotante" data-wsp href="#" aria-label="Escribinos por WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" aria-hidden="true">
+      <path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.42 9.42 0 0 1-4.8-1.32l-.34-.2-3.57.94.95-3.48-.22-.36a9.4 9.4 0 0 1-1.44-5.02c0-5.2 4.23-9.43 9.44-9.43a9.37 9.37 0 0 1 6.67 2.77 9.35 9.35 0 0 1 2.76 6.67c0 5.2-4.23 9.43-9.44 9.43zM20.14 3.85A11.28 11.28 0 0 0 12.05.5C5.8.5.72 5.58.72 11.82c0 2 .52 3.95 1.52 5.67L.62 23.5l6.15-1.61a11.3 11.3 0 0 0 5.28 1.34h.01c6.24 0 11.32-5.08 11.32-11.32 0-3.03-1.18-5.87-3.24-8.01z"/>
+    </svg>
+  </a>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/contacto.js"></script>
+</body>
+</html>

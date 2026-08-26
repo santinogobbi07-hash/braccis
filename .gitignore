@@ -1,0 +1,14 @@
+# Los PDF de catalogo: pesan 140 MB y no se publican.
+# Se guardan aparte; el generador los busca en Descargas si no estan aca.
+catalogos/*
+!catalogos/.gitkeep
+
+# Version de un solo archivo: se genera con herramientas/armar_link.py
+braccis-una-pagina.html
+
+# Configuracion local del editor y basura de Windows
+.claude/
+__pycache__/
+*.pyc
+Thumbs.db
+desktop.ini

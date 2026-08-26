@@ -1,0 +1,71 @@
+# ============================================================
+# Cabeceras de seguridad
+# ============================================================
+# Este archivo lo lee Netlify (y tambien Cloudflare Pages) al publicar.
+# No hace falta configurar nada: alcanza con que este en la raiz, al
+# lado de index.html, y que se suba junto con el resto.
+#
+# Si algun dia se publica en otro lado que no lea este archivo
+# (por ejemplo GitHub Pages), estas protecciones NO se aplican y hay
+# que configurarlas en ese servicio.
+# ============================================================
+
+/*
+  # Que puede cargar la pagina y de donde. Todo lo que no este listado,
+  # el navegador lo bloquea. Es la defensa principal contra codigo ajeno.
+  #
+  # - script-src 'self'  : solo se ejecutan los .js del propio sitio.
+  #                        No hay ningun script suelto dentro del HTML,
+  #                        asi que esta regla puede ser asi de estricta.
+  # - style-src          : hace falta 'unsafe-inline' porque hay algunos
+  #                        style="..." sueltos en el HTML. En estilos el
+  #                        riesgo es bajo; en scripts seria grave.
+  # - connect-src        : formspree.io esta permitido de antemano para
+  #                        que el formulario funcione el dia que se
+  #                        conecte (ver README). Si no se usa, no molesta.
+  # - frame-ancestors    : nadie puede meter el sitio dentro de un iframe.
+  #                        Evita que copien la pagina para enganar gente.
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+
+  # Version vieja de lo anterior, para navegadores antiguos
+  X-Frame-Options: DENY
+
+  # Que el navegador no adivine el tipo de archivo. Evita que algo
+  # subido como imagen termine ejecutandose como script.
+  X-Content-Type-Options: nosniff
+
+  # Al salir del sitio no se filtra la direccion completa de la pagina
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # El sitio no usa camara, microfono ni ubicacion: se apagan
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+  # Obliga a usar HTTPS por un ano.
+  # OJO: activar recien cuando el dominio definitivo ande bien por HTTPS.
+  # Una vez que el navegador lo guarda, no se puede volver atras rapido.
+  Strict-Transport-Security: max-age=31536000
+
+# ============================================================
+# Cache: que los cambios se vean enseguida
+# ============================================================
+# Los archivos no llevan version en el nombre (styles.css es siempre
+# styles.css). Sin estas reglas, quien ya visito el sitio puede seguir
+# viendo la version vieja durante horas despues de una actualizacion.
+# Nos paso durante las pruebas.
+
+# El HTML y el codigo se revisan siempre contra el servidor.
+# Si no cambiaron, el servidor responde "sin cambios" y no se descarga
+# nada: no hay costo real.
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/css/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/js/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Las fotos si se guardan: cuando cambia una prenda, cambia el nombre
+# del archivo, asi que no hay riesgo de ver una foto vieja.
+/img/*
+  Cache-Control: public, max-age=604800
