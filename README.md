@@ -152,21 +152,53 @@ Y abrir `http://localhost:5173` en el navegador.
 
 ## 5. Publicarlo
 
-La opción más simple y gratuita es **Netlify Drop**:
+Hay dos caminos y los dos son gratis. **Los dos funcionan**: la diferencia
+está en la seguridad y en cómo se actualiza.
+
+### Opción A — Netlify Drop (la más segura)
 
 1. Entrá a [app.netlify.com/drop](https://app.netlify.com/drop).
 2. Arrastrá la carpeta `Braccis` entera a la ventana.
 3. Listo, queda online con una URL tipo `braccis.netlify.app`.
 
-Para usar un dominio propio (`braccis.com.ar`), se compra en
-[NIC Argentina](https://nic.ar) y se apunta desde el panel de Netlify.
+Para actualizar, volvés a arrastrar la carpeta.
 
-Cada vez que cambies algo, volvés a arrastrar la carpeta y se actualiza.
+**Es la opción recomendada** porque Netlify lee el archivo `_headers`,
+que activa todas las protecciones (ver la sección de Seguridad).
 
-> **Antes de arrastrar, vaciá `catalogos/`.** Los cuatro PDF pesan 140 MB
-> y el sitio entero pesa 4 MB. Si están adentro, la subida tarda muchísimo
-> al pedo: nadie los ve, no están linkeados desde ninguna página.
-> Guardalos aparte y copialos de vuelta solo cuando corras el generador.
+### Opción B — GitHub Pages
+
+El proyecto ya está preparado como repositorio de git, listo para subir.
+Desde **GitHub Desktop**:
+
+1. `Archivo` → `Add Local Repository` → elegí `Documents\Braccis`
+2. `Publish repository`
+3. En github.com, entrá al repositorio → `Settings` → `Pages`
+4. En *Source* elegí `Deploy from a branch`, rama `main`, carpeta `/ (root)` → `Save`
+5. En un minuto queda en `https://TU-USUARIO.github.io/braccis/`
+
+Para actualizar: guardás los cambios, `Commit` y `Push` desde GitHub Desktop.
+
+**Dos cosas a tener en cuenta:**
+
+- **El repositorio tiene que ser público.** GitHub Pages gratis no funciona
+  con repositorios privados. El código y las fotos quedan a la vista de
+  cualquiera (las fotos se publican igual en el sitio, así que no cambia
+  mucho, pero conviene saberlo).
+- **GitHub Pages ignora `_headers`.** Por eso las reglas de seguridad
+  también están escritas dentro de cada HTML. Se pierden dos: la que
+  impide meter el sitio dentro de un iframe y la que fuerza HTTPS, porque
+  esas solo funcionan como cabecera del servidor.
+
+### Dominio propio
+
+Con cualquiera de las dos opciones se puede usar `braccis.com.ar`.
+Se compra en [NIC Argentina](https://nic.ar) y se configura desde el panel
+de Netlify o desde `Settings → Pages → Custom domain` en GitHub.
+
+> **Si publicás arrastrando la carpeta, vaciá antes `catalogos/`.** Los
+> cuatro PDF pesan 140 MB y el sitio entero pesa 6. Con git no hace falta:
+> el `.gitignore` ya los deja afuera.
 
 ---
 
