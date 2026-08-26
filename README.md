@@ -1,5 +1,11 @@
 # Braccis — sitio web
 
+**En línea:** https://santinogobbi07-hash.github.io/braccis/
+**Repositorio:** https://github.com/santinogobbi07-hash/braccis
+
+Para actualizar el sitio: guardás los cambios, y desde GitHub Desktop
+hacés `Commit` y después `Push`. En un minuto se ve en línea.
+
 Sitio estático (HTML + CSS + JavaScript, sin frameworks ni build).
 Se abre haciendo doble clic en `index.html` y se publica gratis.
 
