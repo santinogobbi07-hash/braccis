@@ -7,6 +7,16 @@
        Si se publica en Netlify, manda _headers (que ademas agrega
        proteccion contra iframes y HTTPS forzado, que aca no se pueden). -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'">
+  <!-- ============ IMPORTANTE ============
+       Le pide a Google y a los buscadores que NO indexen este sitio.
+       Esta puesto porque esta direccion es una muestra temporal: si se
+       da de baja, un link indexado seguiria apareciendo en las busquedas
+       durante semanas.
+
+       CUANDO EL SITIO SEA EL DEFINITIVO, HAY QUE BORRAR ESTA LINEA
+       de las tres paginas. Si no, el sitio nunca aparece en Google.
+       ==================================== -->
+  <meta name="robots" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catálogo | Braccis</title>
   <meta name="description" content="Catálogo completo de prendas Braccis: remeras, jeans, tejidos, camisas y blusas. Talles, colores y composición de cada modelo.">
