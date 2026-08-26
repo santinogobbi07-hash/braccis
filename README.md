@@ -6,6 +6,29 @@
 Para actualizar el sitio: guardás los cambios, y desde GitHub Desktop
 hacés `Commit` y después `Push`. En un minuto se ve en línea.
 
+> ### ⚠️ El sitio está oculto para Google, a propósito
+>
+> Las tres páginas tienen `<meta name="robots" content="noindex, nofollow">`
+> porque esta dirección es una **muestra temporal**: si se da de baja, un
+> link ya indexado seguiría apareciendo en las búsquedas durante semanas.
+>
+> **Cuando esta pase a ser la dirección definitiva, hay que borrar esa
+> línea de `index.html`, `catalogo.html` y `contacto.html`.** Si no, el
+> sitio no aparece nunca en Google.
+
+### Cómo darlo de baja
+
+| Qué querés | Dónde | Resultado |
+|---|---|---|
+| Que deje de verse el sitio | Settings → Pages → Source: `None` | El link muere, el código queda |
+| Que no se vea el código | Settings → General → Change visibility | El link **también** muere (Pages gratis necesita repo público) |
+| Borrar todo | Settings → Danger Zone → Delete this repository | Desaparece |
+
+Lo que **no** se puede deshacer: si alguien ya clonó o descargó el
+repositorio, esa copia queda. Y todo lo que estuvo en un commit sigue en
+el historial aunque después se borre el archivo — por eso nunca hay que
+subir contraseñas ni claves, ni siquiera "un ratito".
+
 Sitio estático (HTML + CSS + JavaScript, sin frameworks ni build).
 Se abre haciendo doble clic en `index.html` y se publica gratis.
 
