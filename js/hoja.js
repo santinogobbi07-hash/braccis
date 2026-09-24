@@ -70,18 +70,34 @@ function filasAObjetos(filas) {
   });
 }
 
-/* Precio en formato argentino -> numero.
-   Acepta 18500, 18.500, $ 18.500, 18.500,50 y 18500.50. */
+/* Precio -> numero. Entiende el formato argentino y el de EE.UU., porque
+   si en Google Sheets se le pone a la columna el tipo "Moneda", puede
+   publicar cualquiera de los dos segun la configuracion regional:
+     18500 · 18.500 · $ 18.500 · 18.500,50   (argentino)
+     $18,500 · $18,500.00                    (EE.UU.)
+   Regla: si aparecen punto y coma, el que esta mas a la derecha es el de
+   los centavos. Si hay uno solo seguido de exactamente 3 digitos, es el
+   de los miles (en ropa nadie pone precios con 3 decimales). */
 function aNumero(texto) {
   let t = String(texto || "").replace(/[^\d.,]/g, "");
   if (!t) return null;
-  if (t.indexOf(",") !== -1) {
-    t = t.replace(/\./g, "").replace(",", ".");        // 18.500,50
-  } else if (/^\d{1,3}(\.\d{3})+$/.test(t)) {
-    t = t.replace(/\./g, "");                           // 18.500
+
+  const ultimoPunto = t.lastIndexOf(".");
+  const ultimaComa = t.lastIndexOf(",");
+
+  if (ultimoPunto !== -1 && ultimaComa !== -1) {
+    const decimal = ultimoPunto > ultimaComa ? "." : ",";
+    const miles = decimal === "." ? "," : ".";
+    t = t.split(miles).join("").replace(decimal, ".");
+  } else if (ultimoPunto !== -1 || ultimaComa !== -1) {
+    const sep = ultimoPunto !== -1 ? "." : ",";
+    const partes = t.split(sep);
+    const sonMiles = partes.slice(1).every(function (p) { return p.length === 3; });
+    t = sonMiles ? partes.join("") : partes.slice(0, -1).join("") + "." + partes[partes.length - 1];
   }
+
   const n = Number(t);
-  return isFinite(n) && n > 0 ? n : null;
+  return isFinite(n) && n > 0 ? Math.round(n * 100) / 100 : null;
 }
 
 /* Solo se aceptan nombres de archivo simples (sin carpetas ni links):
