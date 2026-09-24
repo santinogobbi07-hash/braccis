@@ -104,8 +104,14 @@ const Carrito = (function () {
     });
     return "Hola, mi teléfono es " + telefono + ". " +
            "Pedido: " + lineas.join(", ") + ". " +
-           "Total: " + formatearPrecio(total) +
-           (faltanPrecios ? " (sin contar las prendas con precio a confirmar)" : "");
+           "Total: " + textoTotal(total, faltanPrecios);
+  }
+
+  // Sin ningun precio no tiene sentido decir "$ 0"
+  function textoTotal(total, faltanPrecios) {
+    if (!total) return "a confirmar";
+    return formatearPrecio(total) +
+      (faltanPrecios ? " (sin contar las prendas con precio a confirmar)" : "");
   }
 
   /* ---------- Panel ---------- */
@@ -223,7 +229,7 @@ const Carrito = (function () {
 
     pie.innerHTML = '' +
       '<div class="carrito__total">' +
-        '<span>Total</span><span>' + esc(formatearPrecio(total) || "$ 0") + '</span>' +
+        '<span>Total</span><span>' + esc(total ? formatearPrecio(total) : "A confirmar") + '</span>' +
       '</div>' +
       (faltanPrecios ? '<p class="carrito__nota">Hay prendas con precio a confirmar: te lo pasamos por WhatsApp.</p>' : "") +
       '<form class="carrito__form" data-carrito-form novalidate>' +
