@@ -48,8 +48,8 @@ const EMPRESA = {
   // los datos de js/productos.js, sin precios.
   //   sheetProductos: pestaña "Productos" (precios, nombres, fotos)
   //   sheetAjustes:   pestaña "Ajustes" (video de portada)
-  sheetProductos: "",
-  sheetAjustes: "",
+  sheetProductos: "https://docs.google.com/spreadsheets/d/e/2PACX-1vT1-0hjIajs9ZoIuhltFO_u-W4CXn8r7SBb6Hyx3cZkMAgGb3sxOUUbvbHKmp5XgyzCHzI_eQ3K2fLD/pub?gid=287490435&single=true&output=csv",
+  sheetAjustes: "https://docs.google.com/spreadsheets/d/e/2PACX-1vT1-0hjIajs9ZoIuhltFO_u-W4CXn8r7SBb6Hyx3cZkMAgGb3sxOUUbvbHKmp5XgyzCHzI_eQ3K2fLD/pub?gid=1246368891&single=true&output=csv",
 
   // Catalogo en PDF que se descarga desde el menu
   catalogoPdf: "docs/catalogo-braccis-pv2027.pdf"
