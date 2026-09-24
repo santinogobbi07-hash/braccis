@@ -6,7 +6,7 @@
        Hacen falta porque GitHub Pages no lee el archivo _headers.
        Si se publica en Netlify, manda _headers (que ademas agrega
        proteccion contra iframes y HTTPS forzado, que aca no se pueden). -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io https://docs.google.com https://*.googleusercontent.com; media-src 'self' https:; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'">
   <!-- ============ IMPORTANTE ============
        Le pide a Google y a los buscadores que NO indexen este sitio.
        Esta puesto porque esta direccion es una muestra temporal: si se
@@ -57,8 +57,12 @@
           <li><a class="nav__link" href="catalogo.html" aria-current="page">Catálogo</a></li>
           <li><a class="nav__link" href="index.html#nosotros">Nosotros</a></li>
           <li><a class="nav__link" href="contacto.html">Contacto</a></li>
+          <li><a class="nav__link nav__link--pdf" href="docs/catalogo-braccis-pv2027.pdf" download>Catálogo PDF ↓</a></li>
         </ul>
       </nav>
+
+      <!-- Carrito: el panel lo arma js/carrito.js -->
+      <button type="button" class="carrito-boton" aria-label="Ver carrito">Carrito <span data-carrito-cantidad>0</span></button>
 
       <button class="hamburguesa" aria-label="Abrir menú" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -72,6 +76,7 @@
       <p class="antetitulo">Colección completa</p>
       <h1 class="titulo-seccion">Catálogo</h1>
       <p class="bajada">Tocá cualquier prenda para ver su ficha: talles, colores y composición.</p>
+      <a class="btn btn--linea btn--chico" style="margin-top:22px" href="docs/catalogo-braccis-pv2027.pdf" download>Descargar catálogo en PDF</a>
     </div>
   </section>
 
@@ -146,6 +151,8 @@
   <script src="js/config.js"></script>
   <script src="js/productos.js"></script>
   <script src="js/catalogo.js"></script>
+  <script src="js/hoja.js"></script>
+  <script src="js/carrito.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

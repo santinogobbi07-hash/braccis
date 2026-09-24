@@ -1,0 +1,54 @@
+﻿id (no tocar),codigo,nombre,categoria,precio,foto,visible,talles,descripcion
+jeans-repro,27V4101,Jeans Chupín Repro,Jeans,,jeans-repro.jpg,si,"26, 28, 30, 32, 34, 36","Jeans chupín de tiro medio, elastizado."
+jeans-gain,A26I4087,Jeans Gain Black Oxford,Jeans,,jeans-gain.jpg,si,"26, 28, 30, 32, 34, 36",Jeans oxford semielastizado.
+jeans-cird,27V4105,Jeans Oxford Cird,Jeans,,jeans-cird.jpg,si,"26, 28, 30, 32, 34, 36","Jeans oxford de tiro medio, elastizado."
+jeans-tampa,A26I4034,Jeans Tampa Recto,Jeans,,jeans-tampa.jpg,si,"26, 28, 30, 32, 34, 36","Jeans recto de tiro medio, elastizado."
+jeans-kady,27V4106,Jeans Recto Kady,Jeans,,jeans-kady.jpg,si,"26, 28, 30, 32, 34, 36","Jeans recto de tiro medio, elastizado."
+jeans-black-moon,A26I4086,Jeans Black Moon Chupín,Jeans,,jeans-black-moon.jpg,si,"26, 28, 30, 32, 34, 36",Jeans chupín elastizado.
+jeans-sunny,27V4103,Jeans Sunny,Jeans,,jeans-sunny.jpg,si,"24, 28, 30, 32, 34",Jeans wide leg de tiro medio con apliques frontales.
+jeans-glam,27V4104,Jeans Recto Glam,Jeans,,jeans-glam.jpg,si,"26, 28, 30, 32, 34, 36","Jeans recto elastizado, tiro medio con apliques laterales."
+jeans-black-night,27V4102,Jeans Recto Black Night,Jeans,,jeans-black-night.jpg,si,"26, 28, 30, 32, 34, 36","Jeans recto elastizado, tiro medio con apliques frontales."
+jeans-seiano,A26I4078,Jeans Wide Leg Seiano,Jeans,,jeans-seiano.jpg,si,"24, 26, 28, 30, 32, 34","Jeans wide leg de tiro medio, elastizado."
+sunflower,27V2210,Remera Sunflower,Remeras,,sunflower.jpg,si,"S, M, L, XL","Remera de algodón, cuello redondo con estampa."
+roking,27V2209,Remera Roking,Remeras,,roking.jpg,si,"S, M, L, XL","Remera de algodón, cuello redondo con estampa."
+libel,27V2208,Remera Libel,Remeras,,libel.jpg,si,"S, M, L, XL","Remera de algodón, cuello redondo con estampa."
+infinity,27V2207,Remera Infinity,Remeras,,infinity.jpg,si,"S, M, L, XL","Remera de algodón, cuello V con estampa."
+hummers,27V2206,Remera Hummers,Remeras,,hummers.jpg,si,"S, M, L, XL","Remera de algodón, cuello V con estampa."
+somos,27V2205,Remera Somos,Remeras,,somos.jpg,si,"S, M, L, XL","Remera de algodón, cuello redondo con estampa."
+vive,27V2204,Remera Vive,Remeras,,vive.jpg,si,"S, M, L, XL","Remera de algodón, cuello redondo con estampa."
+cat-love,27V2203,Remera Cat Love,Remeras,,cat-love.jpg,si,"S, M, L, XL","Remera de algodón, cuello redondo con estampa."
+gio,A26I2128,Polera Gio,Remeras,,gio.jpg,si,"S, M, L, XL",Polera de morley.
+moon-flower,A26I2141,Remera Moon Flower,Remeras,,moon-flower.jpg,si,"S, M, L, XL","Remera de algodón, cuello redondo con estampa y detalle de corte en los laterales."
+moon,A26I2143,Remera Moon,Remeras,,moon.jpg,si,"S, M, L, XL","Remera de algodón, cuello redondo con estampa y detalle de corte en los laterales."
+trendy,A26I2161,Remera Trendy,Remeras,,trendy.jpg,si,"S, M, L, XL","Remera de algodón, cuello redondo básica."
+victoria,A26I2000,Remera Victoria,Remeras,,victoria.jpg,si,"S, M, L, XL","Remera cuello V, 100% algodón."
+perfectly,A26I2142,Remera Perfectly,Remeras,,perfectly.jpg,si,"S, M, L, XL","Remera de algodón, cuello redondo con estampa y detalle de corte en los laterales."
+karma,A26I2153,Remera Karma,Remeras,,karma.jpg,si,"S, M, L, XL","Remera de jersey, cuello redondo con estampa al frente."
+be-you,A26I2154,Remera Be You,Remeras,,be-you.jpg,si,"S, M, L, XL","Remera de jersey, cuello redondo con estampa al frente."
+lirium,A26I2168,Remera Lirium,Remeras,,lirium.jpg,si,"S, M, L, XL","Remera de algodón, cuello redondo con estampa."
+jaguar,A26I2167,Remera Jaguar,Remeras,,jaguar.jpg,si,"S, M, L, XL","Remera de algodón, cuello redondo con estampa."
+idalia,27V00429,Remera Tejida Idalia,Tejidos,,idalia.jpg,si,Único,Remera tejida de talle único.
+sweater-esmeralda,A26I183,Sweater,Tejidos,,sweater-esmeralda.jpg,si,Único,Sweater tejido de talle único.
+cowl-neck,A26I6013,Buzo Cowl Neck Rústico,Tejidos,,cowl-neck.jpg,si,"S, M, L, XL",Buzo rústico con cuello cowl neck.
+chery,27V00420,Remera Tejida Chery,Tejidos,,chery.jpg,si,Único,Remera tejida de talle único.
+celina,27V00408,Remera Tejida Celina,Tejidos,,celina.jpg,si,Único,Remera tejida de talle único.
+julieta,27V00408,Remera Julieta,Tejidos,,julieta.jpg,si,Único,Remera tejida de talle único.
+calista,27V00428,Remera Tejida Calista,Tejidos,,calista.jpg,si,Único,Remera tejida de talle único.
+africa,27V00177,Sweater África,Tejidos,,africa.jpg,si,Único,Sweater tejido de talle único.
+beca,27V00393,Musculosa Tejida Beca,Tejidos,,beca.jpg,si,Único,Musculosa tejida de talle único.
+marion,27V00392,Remera Tejida Marion,Tejidos,,marion.jpg,si,Único,Remera tejida de talle único.
+analia,27V00391,Remera Tejida Analía,Tejidos,,analia.jpg,si,Único,Remera tejida de talle único.
+nicky,27V00432,Remera Tejida Nicky,Tejidos,,nicky.jpg,si,Único,Remera tejida de talle único.
+cassie,27V00394,Remera Tejida Cassie,Tejidos,,cassie.jpg,si,Único,Remera tejida de talle único.
+barbara,27V00423,Remera Tejida Bárbara,Tejidos,,barbara.jpg,si,Único,Remera tejida de talle único.
+kaia,27V00395,Remera Tejida Kaia,Tejidos,,kaia.jpg,si,Único,Remera tejida de talle único.
+chantal,27V00424,Remera Tejida Chantal,Tejidos,,chantal.jpg,si,Único,Remera tejida de talle único.
+cruella,27V00427,Tejido Cruella,Tejidos,,cruella.jpg,si,Único,Prenda tejida de talle único.
+lauren,27V00430,Chaleco Tejido Lauren,Tejidos,,lauren.jpg,si,Único,Chaleco tejido de talle único.
+galit,27V0086,Vestido Galit,Tejidos,,galit.jpg,si,Único,Vestido tejido de talle único.
+era,A26I2123,Remera Era,Remeras,,era.jpg,si,"S, M, L, XL","Remera de foil, cuello redondo."
+nidia,27V00356,Blusa Nidia,Blusas,,nidia.jpg,si,"S, M, L, XL",Blusa de cuello redondo.
+ons,27V1022,Camisa Ons,Camisas,,ons.jpg,si,"S, M, L, XL",Camisa de lino.
+plumety,27V1020,Blusa Plumety,Blusas,,plumety.jpg,si,"S, M, L, XL",Blusa de plumetí con manga japonesa.
+dante,27V1021,Camisa Dante,Camisas,,dante.jpg,si,"S, M, L, XL",Camisa de fibrana con apliques en cuello y puño.
+dall,27V1023,Camisa Dall,Camisas,,dall.jpg,si,"S, M, L, XL",Camisa de fibrana.

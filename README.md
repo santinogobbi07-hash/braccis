@@ -47,17 +47,24 @@ Braccis/
 │   ├── config.js       ← DATOS DE LA EMPRESA (editar acá)
 │   ├── productos.js    ← LAS PRENDAS (editar acá)
 │   ├── catalogo.js     Motor del catálogo (no hace falta tocarlo)
+│   ├── hoja.js         Lee el Google Sheets y el video (no hace falta tocarlo)
+│   ├── carrito.js      Carrito y pedido por WhatsApp (no hace falta tocarlo)
 │   ├── contacto.js     Formulario (no hace falta tocarlo)
 │   └── main.js         Menú, animaciones (no hace falta tocarlo)
 ├── img/
-│   └── prendas/        Fotos de las prendas (salieron de los PDF)
+│   ├── prendas/        Fotos de las prendas (salieron de los PDF)
+│   └── colores/        Muestras de color recortadas de los PDF
+├── video/              Video de portada (ver LEEME.txt)
+├── docs/               Catálogo PDF para descargar
 ├── catalogos/          Los PDF originales (ver nota al publicar)
 └── herramientas/
-    └── generar_catalogo.py   Lee los PDF y regenera el catálogo
+    ├── generar_catalogo.py   Lee los PDF y regenera el catálogo
+    ├── armar_plantilla.js    Arma la plantilla del Google Sheets
+    └── armar_pdf.py          Arma el catálogo PDF liviano
 ```
 
-**De todo esto, solo hay dos archivos que se tocan seguido:
-`js/config.js` y `js/productos.js`.**
+**Con el Google Sheets armado, el día a día se hace desde ahí.** En el
+código solo se toca `js/config.js` si cambian los datos de contacto.
 
 Las 53 prendas y sus fotos ya están cargadas, sacadas de los cuatro
 catálogos PDF (JEANS, CAP REMERAS, HILO y CAMISAS).
@@ -77,6 +84,90 @@ de país y sin el 15**.
 |--------------------|-------------------|
 | (011) 15-5555-1234 | `5491155551234`   |
 | (0341) 15-666-7777 | `5493416667777`   |
+
+---
+
+## 1 bis. Administrar el sitio desde Google Sheets
+
+Precios, nombres, fotos, prendas ocultas y el video de portada se manejan
+desde un Google Sheets. **No hace falta tocar código.**
+
+### Armarlo por primera vez (una sola vez, 10 minutos)
+
+1. Entrá a [sheets.google.com](https://sheets.google.com) con la cuenta de
+   la empresa → **Hoja de cálculo en blanco**. Arriba a la izquierda,
+   ponele de nombre **Braccis – Catálogo**.
+2. **Archivo → Importar → Subir** → elegí el archivo
+   `herramientas/plantilla-productos.csv` (ya trae las 53 prendas cargadas).
+   En la ventana que aparece elegí **"Reemplazar hoja actual"** → **Importar datos**.
+3. Abajo, en la pestaña de la hoja, clic derecho → **Cambiar nombre** →
+   escribí **Productos** (exacto, con mayúscula).
+4. Abajo a la izquierda, el **+** para agregar otra pestaña. Nombrala
+   **Ajustes** y escribí:
+
+   | | A | B |
+   |---|---|---|
+   | 1 | clave | valor |
+   | 2 | video_portada | portada.mp4 |
+
+   (Si todavía no hay video, dejá B2 vacío.)
+5. **Archivo → Compartir → Publicar en la Web**.
+   - En el primer desplegable elegí **Productos**.
+   - En el segundo, **Valores separados por comas (.csv)**.
+   - Clic en **Publicar** → **Aceptar**. Copiá el link que aparece.
+   - Abajo, en "Contenido publicado y configuración", dejá tildado
+     **"Volver a publicar automáticamente cuando se hagan cambios"**.
+6. Repetí el paso 5 eligiendo **Ajustes** en el primer desplegable.
+   Copiá ese segundo link.
+7. Pegá los dos links en `js/config.js`, en `sheetProductos` y
+   `sheetAjustes`, y subí el cambio (GitHub Desktop → Commit → Push).
+
+### Uso de todos los días
+
+| Columna | Qué poner | Ejemplo |
+|---|---|---|
+| **id (no tocar)** | Nunca se cambia. Es cómo el sitio reconoce cada prenda | `somos` |
+| **codigo** | El código del catálogo | `27V2205` |
+| **nombre** | Como se ve en la web | `Remera Somos` |
+| **categoria** | Remeras, Camisas, Blusas, Tejidos o Jeans | `Remeras` |
+| **precio** | Solo el número. Acepta con o sin puntos | `18500` o `18.500` |
+| **foto** | El nombre del archivo en `img/prendas/` | `somos.jpg` |
+| **visible** | `si` se muestra, `no` se oculta (sin borrarla) | `no` |
+| **talles** | Separados por coma | `S, M, L, XL` |
+| **descripcion** | Un renglón | `Remera de algodón...` |
+
+- **Celda vacía = queda lo que ya estaba.** Si no ponés precio, dice
+  "Consultar precio".
+- **Prenda nueva**: agregá una fila con un `id` nuevo (sin espacios ni
+  acentos, por ejemplo `remera-luna`), y completá nombre, categoria, precio
+  y foto. La foto se sube a `img/prendas/` con GitHub Desktop.
+- **Los cambios tardan unos 5 minutos** en verse en la web: es la demora
+  de Google al volver a publicar. Si no aparecen, esperá y recargá.
+- ⚠️ **Todo lo que está en ese Sheets es público** (cualquiera con el link
+  lo puede ver). No pongas costos, datos de proveedores ni nada privado.
+- ⚠️ **No cambies los títulos de las columnas** ni los nombres de las
+  pestañas. Si el sitio no los encuentra, muestra los datos viejos.
+
+Si el Sheets se rompe o Google no responde, **el sitio sigue funcionando**
+con los datos de `js/productos.js`, sin precios.
+
+La plantilla se puede regenerar con `node herramientas/armar_plantilla.js`.
+
+---
+
+## 1 ter. Carrito, pedido por WhatsApp y catálogo PDF
+
+- **Carrito**: en la ficha de cada prenda se elige talle (y color si tiene)
+  y se agrega. El carrito queda guardado en el navegador del cliente.
+- **Finalizar pedido**: pide el teléfono obligatorio y abre WhatsApp con
+  el mensaje listo, dirigido al número de `js/config.js`:
+  > Hola, mi teléfono es 11 5555-1234. Pedido: 1x Remera Somos · Talle M ·
+  > Negro ($ 18.500), 1x Jeans Recto Kady · Talle 28 ($ 32.000). Total: $ 50.500
+- **No cobra**: el pago se arregla por WhatsApp.
+- **Video de portada**: ver `video/LEEME.txt`.
+- **Catálogo PDF**: `docs/catalogo-braccis-pv2027.pdf`, botón en el menú
+  y en la página de catálogo. Con una colección nueva se regenera con
+  `python herramientas/armar_pdf.py`.
 
 ---
 
@@ -270,15 +361,21 @@ confirma que fabrica en el país, se pueden poner de vuelta.
 ## Seguridad
 
 El sitio es estático: no tiene base de datos, ni panel de administración,
-ni usuarios, ni contraseñas. **No guarda ningún dato de quien lo visita**
-(nada de cookies, ni localStorage, ni analítica). Eso elimina de entrada
-la mayoría de los ataques típicos: no hay nada que robar ni dónde entrar.
+ni usuarios, ni contraseñas, ni pagos. Eso elimina de entrada la mayoría
+de los ataques típicos: no hay nada que robar ni dónde entrar.
+
+**Lo único que se guarda es el carrito**, en el navegador de cada persona
+(`localStorage`): qué prendas, qué talle, qué color y cuántas. Nunca sale
+de su compu o celular. **El teléfono que escribe para finalizar el pedido
+no se guarda**: se usa para armar el mensaje de WhatsApp y nada más.
+No hay cookies ni analítica.
 
 Lo que sí se cubrió:
 
 | Riesgo | Cómo está resuelto |
 |---|---|
-| Inyección de código por los datos | Todo lo que sale de `productos.js` se escapa antes de mostrarse (`esc()` en `catalogo.js`) |
+| Inyección de código por los datos | Todo lo que sale de `productos.js` y del Google Sheets se escapa antes de mostrarse (`esc()` en `catalogo.js`) |
+| Alguien edita el Google Sheets con mala intención | Las fotos y el video solo aceptan un nombre de archivo simple (nada de carpetas ni links raros); los precios solo aceptan números; los textos se muestran como texto, nunca como código |
 | Scripts de terceros | Ninguno. Solo la tipografía de Google |
 | Enlaces a otros sitios | Todos con `rel="noopener"` |
 | Robots de spam en el formulario | Campo trampa invisible en `contacto.html` |

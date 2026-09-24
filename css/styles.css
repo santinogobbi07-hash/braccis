@@ -509,3 +509,184 @@ body {
   height: 1px;
   overflow: hidden;
 }
+
+/* ============================================================
+   FUNCIONES NUEVAS: video de portada, compra y carrito
+   ------------------------------------------------------------
+   Todo lo de abajo se agrego sin tocar ninguna regla anterior.
+   Usa los mismos colores, letras y botones del diseno aprobado.
+   ============================================================ */
+
+/* Que "hidden" gane siempre, aunque un componente tenga display propio */
+[hidden] { display: none !important; }
+
+/* ---------- Video de portada ----------
+   Queda debajo del texto, con el mismo oscurecido que la foto.
+   Arranca transparente y aparece solo cuando de verdad se reproduce. */
+.hero { position: relative; overflow: hidden; isolation: isolate; }
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  opacity: 0;
+  transition: opacity .8s ease;
+  pointer-events: none;
+}
+.hero--con-video .hero__video { opacity: 1; }
+.hero--con-video::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(rgba(31,27,24,.42), rgba(31,27,24,.52));
+  pointer-events: none;
+}
+
+/* ---------- Boton del carrito en el encabezado ---------- */
+.nav { margin-left: auto; }
+.carrito-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .8rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding-block: 6px;
+}
+.carrito-boton [data-carrito-cantidad] {
+  min-width: 22px;
+  height: 22px;
+  padding-inline: 6px;
+  border-radius: 999px;
+  background: var(--tinta);
+  color: var(--crema);
+  font-size: .72rem;
+  letter-spacing: 0;
+  display: inline-grid;
+  place-items: center;
+  font-variant-numeric: tabular-nums;
+}
+.carrito-boton--pulso [data-carrito-cantidad] { animation: pulso-carrito .5s ease; }
+@keyframes pulso-carrito {
+  40% { transform: scale(1.3); background: var(--acento); }
+}
+
+/* Item del menu para descargar el PDF */
+.nav__link--pdf { color: var(--acento); }
+
+/* ---------- Tarjeta: boton de agregar y precio a consultar ---------- */
+.btn--chico { padding: 9px 16px; font-size: .7rem; }
+/* El boton ocupa el ancho de la tarjeta y puede partirse en dos lineas:
+   si no, en celular empuja la columna y la grilla queda despareja */
+.producto { min-width: 0; }
+.producto__agregar { margin-top: 12px; width: 100%; white-space: normal; text-align: center; }
+@media (max-width: 560px) {
+  .producto__agregar { padding-inline: 8px; letter-spacing: .06em; }
+}
+.producto__precio--consultar { color: var(--tinta-soft); font-size: .85rem; }
+
+/* ---------- Ficha: eleccion de talle y color ---------- */
+.talle--elegible { cursor: pointer; transition: var(--trans); }
+.talle--elegible:hover { border-color: var(--tinta); }
+.talle--elegible[aria-pressed="true"] {
+  background: var(--tinta);
+  color: var(--crema);
+  border-color: var(--tinta);
+}
+.color-item--elegible {
+  padding: 4px 10px 4px 5px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  transition: var(--trans);
+}
+.color-item--elegible:hover { border-color: var(--linea); }
+.color-item--elegible[aria-pressed="true"] { border-color: var(--tinta); background: var(--blanco); }
+
+.ficha__compra { display: grid; gap: 8px; margin-top: 26px; }
+.ficha__aviso { font-size: .85rem; color: var(--acento); min-height: 1.3em; }
+
+/* ---------- Panel del carrito ---------- */
+.carrito-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 105;
+  background: rgba(31, 27, 24, .55);
+}
+.carrito {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  z-index: 110;
+  width: min(440px, 100%);
+  background: var(--crema);
+  box-shadow: var(--sombra);
+  display: flex;
+  flex-direction: column;
+}
+.carrito__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px;
+  border-bottom: 1px solid var(--linea);
+}
+.carrito__titulo { font-family: var(--display); font-size: 1.8rem; font-weight: 500; }
+.carrito__cerrar { font-size: 1.8rem; line-height: 1; }
+.carrito__cuerpo { flex: 1; overflow-y: auto; padding: 8px 24px; }
+.carrito__vacio { padding: 48px 0; text-align: center; color: var(--tinta-soft); }
+
+.carrito__item {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--linea);
+  align-items: start;
+}
+.carrito__foto { aspect-ratio: 3 / 4; background: var(--crema-alt); overflow: hidden; }
+.carrito__foto img { width: 100%; height: 100%; object-fit: cover; }
+.carrito__nombre { font-family: var(--display); font-size: 1.15rem; line-height: 1.2; }
+.carrito__detalle { font-size: .8rem; color: var(--tinta-soft); margin-top: 2px; }
+.carrito__precio { font-size: .9rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.carrito__cantidad { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: .9rem; }
+.carrito__cantidad button:not(.carrito__quitar) {
+  width: 28px; height: 28px;
+  border: 1px solid var(--linea);
+  background: var(--blanco);
+  transition: var(--trans);
+}
+.carrito__cantidad button:not(.carrito__quitar):hover { border-color: var(--tinta); }
+.carrito__cantidad span { min-width: 16px; text-align: center; font-variant-numeric: tabular-nums; }
+.carrito__quitar {
+  margin-left: 6px;
+  font-size: .72rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--tinta-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.carrito__pie { padding: 20px 24px 26px; border-top: 1px solid var(--linea); display: grid; gap: 14px; }
+.carrito__pie:empty { display: none; }
+.carrito__total {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--display);
+  font-size: 1.4rem;
+  font-variant-numeric: tabular-nums;
+}
+.carrito__nota { font-size: .85rem; color: var(--tinta-soft); }
+.carrito__form { display: grid; gap: 12px; }
+.carrito__form .btn { width: 100%; }
+.carrito__error { font-size: .85rem; color: #9b2c2c; min-height: 0; }
+.carrito__error:empty { display: none; }
+.carrito__acciones { display: grid; gap: 10px; }
+
+@media (max-width: 900px) {
+  .carrito-boton { margin-left: auto; }
+  .nav { margin-left: 0; }
+}

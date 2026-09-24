@@ -25,6 +25,7 @@ except ImportError:
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SALIDA = os.path.join(RAIZ, "braccis-una-pagina.html")
+SITIO = "https://santinogobbi07-hash.github.io/braccis/"
 
 # Las fotos se achican: en pantalla nunca se ven a mas de 400 px de ancho,
 # asi que 760 de alto alcanza de sobra y el archivo pesa la mitad.
@@ -95,7 +96,10 @@ def main():
     if sobrantes:
         print("  AVISO: quedaron rutas sin incrustar:", set(sobrantes))
 
+    # hoja.js va igual, pero en la vista previa no puede leer el Google Sheets
+    # (la plataforma lo bloquea): queda con los datos locales.
     js = "\n".join([leer("js/config.js"), productos, leer("js/catalogo.js"),
+                    leer("js/hoja.js"), leer("js/carrito.js"),
                     leer("js/main.js"), leer("js/contacto.js")])
 
     # El cambio de vista reemplaza a la navegacion entre archivos
@@ -155,14 +159,16 @@ document.addEventListener("DOMContentLoaded", function () {
           <li><a class="nav__link" href="#" data-vista="catalogo">Catálogo</a></li>
           <li><a class="nav__link" href="#" data-ir-nosotros>Nosotros</a></li>
           <li><a class="nav__link" href="#" data-vista="contacto">Contacto</a></li>
+          <li><a class="nav__link nav__link--pdf" href="%sdocs/catalogo-braccis-pv2027.pdf" download>Catálogo PDF ↓</a></li>
         </ul>
-      </nav>"""
+      </nav>""" % SITIO
 
     header = """
   <header class="header">
     <div class="contenedor header__inner">
       <a href="#" class="logo" data-vista="inicio"><img src="%s" alt="Braccis"></a>
 %s
+      <button type="button" class="carrito-boton" aria-label="Ver carrito">Carrito <span data-carrito-cantidad>0</span></button>
       <button class="hamburguesa" aria-label="Abrir menú" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -225,6 +231,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         r'href="#" data-vista="catalogo" data-cat="\1"', cuerpo)
         cuerpo = cuerpo.replace('href="catalogo.html"', 'href="#" data-vista="catalogo"')
         cuerpo = cuerpo.replace('href="contacto.html"', 'href="#" data-vista="contacto"')
+        # El PDF no viaja adentro del archivo: se baja del sitio publicado
+        cuerpo = cuerpo.replace('href="docs/', 'href="' + SITIO + 'docs/')
+        # El video de portada necesita el Sheet, que aca no se puede leer
+        cuerpo = re.sub(r'<video class="hero__video".*?</video>', "", cuerpo, flags=re.S)
         cuerpo = cuerpo.replace('href="index.html#nosotros"', 'href="#" data-ir-nosotros')
         cuerpo = cuerpo.replace('href="index.html"', 'href="#" data-vista="inicio"')
         # El pie y el boton flotante ya estan una sola vez, afuera

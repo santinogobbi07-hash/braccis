@@ -6,7 +6,7 @@
        Hacen falta porque GitHub Pages no lee el archivo _headers.
        Si se publica en Netlify, manda _headers (que ademas agrega
        proteccion contra iframes y HTTPS forzado, que aca no se pueden). -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io https://docs.google.com https://*.googleusercontent.com; media-src 'self' https:; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'">
   <!-- ============ IMPORTANTE ============
        Le pide a Google y a los buscadores que NO indexen este sitio.
        Esta puesto porque esta direccion es una muestra temporal: si se
@@ -58,8 +58,12 @@
           <li><a class="nav__link" href="catalogo.html">Catálogo</a></li>
           <li><a class="nav__link" href="index.html#nosotros">Nosotros</a></li>
           <li><a class="nav__link" href="contacto.html">Contacto</a></li>
+          <li><a class="nav__link nav__link--pdf" href="docs/catalogo-braccis-pv2027.pdf" download>Catálogo PDF ↓</a></li>
         </ul>
       </nav>
+
+      <!-- Carrito: el panel lo arma js/carrito.js -->
+      <button type="button" class="carrito-boton" aria-label="Ver carrito">Carrito <span data-carrito-cantidad>0</span></button>
 
       <button class="hamburguesa" aria-label="Abrir menú" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -71,6 +75,11 @@
        El titulo y la bajada son las frases reales de la marca, tomadas
        de las portadas de los catalogos. No inventar texto aca. -->
   <section class="hero">
+    <!-- Video de portada: el link se carga desde el Google Sheets
+         (pestaña "Ajustes", fila video_portada). Si no hay video, o no
+         carga, queda la foto de siempre. Ver js/hoja.js -->
+    <video class="hero__video" muted loop playsinline preload="none"
+           poster="img/prendas/jeans-cird.jpg" aria-hidden="true" tabindex="-1"></video>
     <div class="contenedor">
       <p class="hero__antetitulo">Nueva colección · Primavera–Verano 2027</p>
       <h1 class="hero__titulo">Piezas que<br>te acompañan siempre</h1>
@@ -227,6 +236,8 @@
   <script src="js/config.js"></script>
   <script src="js/productos.js"></script>
   <script src="js/catalogo.js"></script>
+  <script src="js/hoja.js"></script>
+  <script src="js/carrito.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

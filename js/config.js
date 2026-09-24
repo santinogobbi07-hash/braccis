@@ -41,7 +41,18 @@ const EMPRESA = {
 
   // Direccion a donde llegan los mensajes del formulario de contacto.
   // Ver README.md, seccion "Formulario de contacto".
-  formEndpoint: ""
+  formEndpoint: "",
+
+  // Links del Google Sheets publicado como CSV (ver README.md, seccion
+  // "Administrar el sitio desde Google Sheets"). Vacios = el sitio usa
+  // los datos de js/productos.js, sin precios.
+  //   sheetProductos: pestaña "Productos" (precios, nombres, fotos)
+  //   sheetAjustes:   pestaña "Ajustes" (video de portada)
+  sheetProductos: "",
+  sheetAjustes: "",
+
+  // Catalogo en PDF que se descarga desde el menu
+  catalogoPdf: "docs/catalogo-braccis-pv2027.pdf"
 };
 
 /* --- Helpers usados por el resto del sitio --- */
@@ -55,5 +66,10 @@ function linkWhatsapp(mensaje) {
 // Formatea un numero como precio argentino: 18500 -> "$ 18.500"
 function formatearPrecio(valor) {
   if (valor === null || valor === undefined || valor === "") return "";
-  return "$ " + Number(valor).toLocaleString("es-AR");
+  const n = Number(valor);
+  const decimales = n % 1 ? 2 : 0;          // 19990.5 -> "19.990,50", no "19.990,5"
+  return "$ " + n.toLocaleString("es-AR", {
+    minimumFractionDigits: decimales,
+    maximumFractionDigits: decimales
+  });
 }

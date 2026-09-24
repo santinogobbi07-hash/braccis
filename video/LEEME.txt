@@ -1,0 +1,28 @@
+VIDEO DE PORTADA
+================
+
+Aca va el video que se reproduce en la portada del sitio.
+
+1. Guardar el video en esta carpeta, con un nombre simple y sin acentos
+   ni espacios. Ejemplo: portada.mp4
+2. En el Google Sheets, pestaña "Ajustes", escribir ese nombre en la fila
+   video_portada (solo el nombre: portada.mp4, sin "video/").
+3. Subir los cambios con GitHub Desktop (Commit y Push).
+
+Como tiene que ser el video
+---------------------------
+- Formato MP4 (H.264). Es el que exporta casi cualquier programa o celular.
+- Sin sonido: se reproduce muteado igual, y el audio solo suma peso.
+- Menos de 10 MB. Mas pesado tarda en cargar desde el celular, y GitHub
+  rechaza archivos de mas de 100 MB.
+- Entre 8 y 20 segundos alcanza: se repite solo.
+- Horizontal. En celular se recorta al centro, asi que lo importante
+  tiene que estar en el medio del cuadro.
+
+Si el video no carga por cualquier motivo, se muestra la foto de siempre.
+Quien tenga activado "reducir movimiento" o "ahorro de datos" en el
+celular ve la foto, a proposito.
+
+Alternativa: en vez del nombre se puede poner un link https directo a un
+archivo .mp4 (por ejemplo de Cloudinary). Los links de Google Drive o
+YouTube NO sirven: no son el archivo de video en si.

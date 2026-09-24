@@ -35,8 +35,9 @@ function dibujarDestacados() {
   const grilla = document.querySelector("[data-destacados]");
   if (!grilla) return;
 
-  const destacados = PRODUCTOS.filter(function (p) { return p.destacado; }).slice(0, 8);
-  const aMostrar = destacados.length ? destacados : PRODUCTOS.slice(0, 8);
+  const disponibles = PRODUCTOS.filter(function (p) { return !p.oculto; });
+  const destacados = disponibles.filter(function (p) { return p.destacado; }).slice(0, 8);
+  const aMostrar = destacados.length ? destacados : disponibles.slice(0, 8);
 
   grilla.innerHTML = aMostrar.map(tarjetaProducto).join("");
   activarClicksDeTarjetas(grilla);
@@ -79,7 +80,7 @@ function dibujarFiltros() {
 
   // Solo mostramos categorias que efectivamente tienen prendas
   const usadas = CATEGORIAS.filter(function (c) {
-    return PRODUCTOS.some(function (p) { return p.categoria === c.id; });
+    return PRODUCTOS.some(function (p) { return !p.oculto && p.categoria === c.id; });
   });
 
   const chips = [{ id: "todas", nombre: "Todas" }].concat(usadas);
@@ -108,6 +109,7 @@ function marcarChipActivo() {
 
 function productosFiltrados() {
   return PRODUCTOS.filter(function (p) {
+    if (p.oculto) return false;   // la ocultaron desde el Google Sheets
     const pasaCategoria = filtroCategoria === "todas" || p.categoria === filtroCategoria;
     const enTexto = (p.nombre + " " + p.codigo + " " + p.descripcion).toLowerCase();
     const pasaTexto = !filtroTexto || enTexto.indexOf(filtroTexto) !== -1;
@@ -155,7 +157,7 @@ function tarjetaProducto(p) {
 
   const precio = p.precio
     ? '<p class="producto__precio">' + esc(formatearPrecio(p.precio)) + '</p>'
-    : "";
+    : (EMPRESA.sheetProductos ? '<p class="producto__precio producto__precio--consultar">Consultar precio</p>' : "");
 
   const codigo = p.codigo
     ? '<p class="producto__codigo">Cód. ' + esc(p.codigo) + '</p>'
@@ -168,15 +170,19 @@ function tarjetaProducto(p) {
       codigo +
       precio +
       '<div class="producto__colores">' + puntos + '</div>' +
+      // El talle es obligatorio: el boton abre la ficha para elegirlo
+      '<button type="button" class="btn btn--linea btn--chico producto__agregar" data-agregar>Agregar al carrito</button>' +
     '</article>';
 }
 
 function activarClicksDeTarjetas(contenedor) {
   contenedor.querySelectorAll(".producto").forEach(function (tarjeta) {
-    tarjeta.addEventListener("click", function () {
-      abrirModal(tarjeta.dataset.id);
+    tarjeta.addEventListener("click", function (e) {
+      const desdeBoton = !!e.target.closest("[data-agregar]");
+      abrirModal(tarjeta.dataset.id, { elegirTalle: desdeBoton });
     });
     tarjeta.addEventListener("keydown", function (e) {
+      if (e.target.closest("[data-agregar]")) return;   // el boton ya se activa solo
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         abrirModal(tarjeta.dataset.id);
@@ -188,7 +194,8 @@ function activarClicksDeTarjetas(contenedor) {
 /* ============================================================
    Modal con el detalle de la prenda
    ============================================================ */
-function abrirModal(id) {
+function abrirModal(id, opciones) {
+  opciones = opciones || {};
   const p = PRODUCTOS.find(function (x) { return x.id === id; });
   const modal = document.querySelector("[data-modal]");
   if (!p || !modal) return;
@@ -215,10 +222,12 @@ function abrirModal(id) {
   if (p.tela)   filas.push(fichaFila("Tela", esc(p.tela)));
 
   if (p.talles && p.talles.length) {
+    // Botones con el mismo aspecto que antes: se elige uno para el carrito
     const talles = p.talles.map(function (t) {
-      return '<span class="talle">' + esc(t) + '</span>';
+      return '<button type="button" class="talle talle--elegible" data-talle="' + esc(t) +
+             '" aria-pressed="false">' + esc(t) + '</button>';
     }).join("");
-    filas.push(fichaFila("Talles", '<div class="talles">' + talles + '</div>'));
+    filas.push(fichaFila("Talles", '<div class="talles" role="group" aria-label="Elegí un talle">' + talles + '</div>'));
   }
 
   if (p.colores && p.colores.length) {
@@ -226,14 +235,15 @@ function abrirModal(id) {
       const bolita = c.muestra
         ? '<img class="punto-color" src="' + esc(c.muestra) + '" alt="" loading="lazy">'
         : "";
-      return '<span class="color-item">' + bolita + esc(c.nombre) + '</span>';
+      return '<button type="button" class="color-item color-item--elegible" data-color="' +
+             esc(c.nombre) + '" aria-pressed="false">' + bolita + esc(c.nombre) + '</button>';
     }).join("");
-    filas.push(fichaFila("Colores", '<div class="colores-lista">' + colores + '</div>'));
+    filas.push(fichaFila("Colores", '<div class="colores-lista" role="group" aria-label="Elegí un color">' + colores + '</div>'));
   }
 
   const precio = p.precio
     ? '<p style="font-size:1.25rem;margin-top:10px">' + esc(formatearPrecio(p.precio)) + '</p>'
-    : "";
+    : (EMPRESA.sheetProductos ? '<p class="producto__precio--consultar" style="margin-top:10px">Consultar precio</p>' : "");
 
   const descripcion = p.descripcion
     ? '<p class="bajada" style="margin-top:14px">' + esc(p.descripcion) + '</p>'
@@ -253,7 +263,11 @@ function abrirModal(id) {
       precio +
       descripcion +
       '<div class="ficha">' + filas.join("") + '</div>' +
-      '<a class="btn btn--wsp" style="margin-top:26px" href="' + esc(linkWhatsapp(consulta)) + '" target="_blank" rel="noopener">Consultar por WhatsApp</a>' +
+      '<div class="ficha__compra">' +
+        '<button type="button" class="btn btn--primario" data-agregar-ficha>Agregar al carrito</button>' +
+        '<p class="ficha__aviso" data-aviso-ficha role="status"></p>' +
+      '</div>' +
+      '<a class="btn btn--wsp" style="margin-top:14px" href="' + esc(linkWhatsapp(consulta)) + '" target="_blank" rel="noopener">Consultar por WhatsApp</a>' +
     '</div>';
 
   modal.classList.add("abierto");
@@ -268,6 +282,56 @@ function abrirModal(id) {
   cerrar.focus();
 
   activarMiniaturas(modal);
+  activarCompra(modal, p);
+
+  // Si se llego desde "Agregar al carrito" de la tarjeta, el foco va a los
+  // talles: es lo primero que hay que elegir
+  if (opciones.elegirTalle) {
+    const primerTalle = modal.querySelector("[data-talle]");
+    if (primerTalle) primerTalle.focus();
+  }
+}
+
+/* Eleccion de talle y color, y alta en el carrito */
+function activarCompra(modal, p) {
+  const aviso = modal.querySelector("[data-aviso-ficha]");
+  let talle = p.talles && p.talles.length === 1 ? p.talles[0] : "";
+  let color = p.colores && p.colores.length === 1 ? p.colores[0].nombre : "";
+
+  function marcar(selector, atributo, valor) {
+    modal.querySelectorAll(selector).forEach(function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute(atributo) === valor ? "true" : "false");
+    });
+  }
+  // Si hay una sola opcion, ya viene elegida
+  if (talle) marcar("[data-talle]", "data-talle", talle);
+  if (color) marcar("[data-color]", "data-color", color);
+
+  modal.querySelectorAll("[data-talle]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      talle = b.getAttribute("data-talle");
+      marcar("[data-talle]", "data-talle", talle);
+      aviso.textContent = "";
+    });
+  });
+  modal.querySelectorAll("[data-color]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      color = b.getAttribute("data-color");
+      marcar("[data-color]", "data-color", color);
+      aviso.textContent = "";
+    });
+  });
+
+  const boton = modal.querySelector("[data-agregar-ficha]");
+  boton.addEventListener("click", function () {
+    const hayTalles = p.talles && p.talles.length;
+    const hayColores = p.colores && p.colores.length;
+    if (hayTalles && !talle) { aviso.textContent = "Elegí un talle."; return; }
+    if (hayColores && !color) { aviso.textContent = "Elegí un color."; return; }
+    if (typeof Carrito === "undefined") return;
+    Carrito.agregar(p.id, talle, color);
+    aviso.textContent = "Listo, se agregó al carrito.";
+  });
 }
 
 /* Al tocar una miniatura, cambia la foto grande de la ficha */
@@ -309,3 +373,13 @@ document.addEventListener("click", function (e) {
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") cerrarModal();
 });
+
+/* Vuelve a dibujar todo con los datos actuales. Lo llama js/hoja.js
+   cuando llegan los precios y cambios del Google Sheets. */
+function redibujarCatalogo() {
+  dibujarDestacados();
+  if (document.querySelector("[data-grilla]")) {
+    dibujarFiltros();
+    dibujarGrilla();
+  }
+}
