@@ -690,3 +690,35 @@ body {
   .carrito-boton { margin-left: auto; }
   .nav { margin-left: 0; }
 }
+
+/* ---------- Prenda agotada ----------
+   Se escribe "agotado" en la columna visible del Google Sheets.
+   Sigue a la vista, con cartel, y no se puede agregar al carrito. */
+.producto__cartel-agotado {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  padding: 6px 12px;
+  background: var(--tinta);
+  color: var(--crema);
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+/* La foto un poco apagada, para que se note de un vistazo */
+.producto:has(.producto__cartel-agotado) .producto__figura img { opacity: .72; }
+.producto__agregar--agotado {
+  border-color: var(--linea);
+  color: var(--tinta-soft);
+  cursor: default;
+}
+.producto__agregar--agotado:hover { background: transparent; color: var(--tinta-soft); }
+.ficha__agotado {
+  margin-top: 26px;
+  padding: 14px 16px;
+  border: 1px solid var(--linea);
+  background: var(--blanco);
+  color: var(--tinta-soft);
+  font-size: .9rem;
+}

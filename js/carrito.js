@@ -33,7 +33,9 @@ const Carrito = (function () {
   }
 
   function producto(id) {
-    return PRODUCTOS.find(function (p) { return p.id === id && !p.oculto; });
+    // Una prenda oculta o agotada no se puede pedir: si estaba en el
+    // carrito, sale al cargarse el Google Sheets
+    return PRODUCTOS.find(function (p) { return p.id === id && !p.oculto && !p.agotado; });
   }
 
   /* Items que se pueden mostrar. Antes de que llegue el Sheet no se
@@ -44,6 +46,7 @@ const Carrito = (function () {
 
   /* ---------- Acciones ---------- */
   function agregar(id, talle, color) {
+    if (!producto(id)) return;
     const igual = items.find(function (i) {
       return i.id === id && i.talle === (talle || "") && i.color === (color || "");
     });

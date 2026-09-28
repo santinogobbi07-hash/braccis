@@ -149,7 +149,11 @@ function aplicarFila(f) {
     p.talles = f.talles.split(/[,;]/).map(function (t) { return t.trim(); }).filter(Boolean);
   }
 
-  p.oculto = /^(no|n|0|false|oculto)$/i.test(f.visible || "");
+  // visible: "si" se ve · "no" se oculta · "agotado" se ve con cartel y
+  // sin poder comprarse (tambien acepta "sin stock")
+  const visible = (f.visible || "").trim();
+  p.oculto = /^(no|n|0|false|oculto)$/i.test(visible);
+  p.agotado = /^(agotado|agotada|sin\s*stock)$/i.test(visible);
 }
 
 /* Descarga un CSV con tiempo maximo de espera */

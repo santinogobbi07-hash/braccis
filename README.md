@@ -132,10 +132,15 @@ desde un Google Sheets. **No hace falta tocar código.**
 | **categoria** | Remeras, Camisas, Blusas, Tejidos o Jeans | `Remeras` |
 | **precio** | Solo el número. Acepta con o sin puntos | `18500` o `18.500` |
 | **foto** | El nombre del archivo en `img/prendas/` | `somos.jpg` |
-| **visible** | `si` se muestra, `no` se oculta (sin borrarla) | `no` |
+| **visible** | `si` se muestra · `no` se oculta · `agotado` se muestra con cartel y sin poder comprarse | `agotado` |
 | **talles** | Separados por coma | `S, M, L, XL` |
 | **descripcion** | Un renglón | `Remera de algodón...` |
 
+- **Sin stock**: si falta un talle, borralo de la columna `talles`. Si
+  falta la prenda entera, escribí `agotado` en `visible`: sigue a la vista
+  con un cartel, sin botón de compra, y el botón de WhatsApp pregunta
+  cuándo vuelve. Si alguien la tenía en el carrito, sale sola.
+  **No borres la fila**: se pierden las fotos de colores y los datos.
 - **Celda vacía = queda lo que ya estaba.** Si no ponés precio, dice
   "Consultar precio".
 - **Prenda nueva**: agregá una fila con un `id` nuevo (sin espacios ni

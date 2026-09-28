@@ -165,13 +165,18 @@ function tarjetaProducto(p) {
 
   return '' +
     '<article class="producto aparece visible" data-id="' + esc(p.id) + '" tabindex="0">' +
-      '<div class="producto__figura">' + imagen + '</div>' +
+      '<div class="producto__figura">' + imagen +
+        (p.agotado ? '<span class="producto__cartel-agotado">Agotado</span>' : '') +
+      '</div>' +
       '<h3 class="producto__nombre">' + esc(p.nombre) + '</h3>' +
       codigo +
       precio +
       '<div class="producto__colores">' + puntos + '</div>' +
       // El talle es obligatorio: el boton abre la ficha para elegirlo
-      '<button type="button" class="btn btn--linea btn--chico producto__agregar" data-agregar>Agregar al carrito</button>' +
+      (p.agotado
+        // Sin stock: mismo lugar y tamano que el boton, para que la grilla no salte
+        ? '<span class="btn btn--linea btn--chico producto__agregar producto__agregar--agotado" aria-hidden="true">Sin stock por ahora</span>'
+        : '<button type="button" class="btn btn--linea btn--chico producto__agregar" data-agregar>Agregar al carrito</button>') +
     '</article>';
 }
 
@@ -249,8 +254,17 @@ function abrirModal(id, opciones) {
     ? '<p class="bajada" style="margin-top:14px">' + esc(p.descripcion) + '</p>'
     : "";
 
-  const consulta = "¡Hola! Me interesa la prenda " + p.nombre +
-                   (p.codigo ? " (cód. " + p.codigo + ")" : "") + ". ¿Me pasan más info?";
+  const cod = p.codigo ? " (cód. " + p.codigo + ")" : "";
+  const consulta = p.agotado
+    ? "¡Hola! Vi que la prenda " + p.nombre + cod + " está agotada. ¿Saben cuándo vuelve?"
+    : "¡Hola! Me interesa la prenda " + p.nombre + cod + ". ¿Me pasan más info?";
+
+  const compra = p.agotado
+    ? '<p class="ficha__agotado">Agotado por ahora. Escribinos y te avisamos cuando vuelva.</p>'
+    : '<div class="ficha__compra">' +
+        '<button type="button" class="btn btn--primario" data-agregar-ficha>Agregar al carrito</button>' +
+        '<p class="ficha__aviso" data-aviso-ficha role="status"></p>' +
+      '</div>';
 
   modal.querySelector("[data-modal-contenido]").innerHTML = '' +
     '<button class="modal__cerrar" data-cerrar aria-label="Cerrar">&times;</button>' +
@@ -263,11 +277,9 @@ function abrirModal(id, opciones) {
       precio +
       descripcion +
       '<div class="ficha">' + filas.join("") + '</div>' +
-      '<div class="ficha__compra">' +
-        '<button type="button" class="btn btn--primario" data-agregar-ficha>Agregar al carrito</button>' +
-        '<p class="ficha__aviso" data-aviso-ficha role="status"></p>' +
-      '</div>' +
-      '<a class="btn btn--wsp" style="margin-top:14px" href="' + esc(linkWhatsapp(consulta)) + '" target="_blank" rel="noopener">Consultar por WhatsApp</a>' +
+      compra +
+      '<a class="btn btn--wsp" style="margin-top:14px" href="' + esc(linkWhatsapp(consulta)) + '" target="_blank" rel="noopener">' +
+        (p.agotado ? 'Consultar cuándo vuelve' : 'Consultar por WhatsApp') + '</a>' +
     '</div>';
 
   modal.classList.add("abierto");
@@ -323,6 +335,7 @@ function activarCompra(modal, p) {
   });
 
   const boton = modal.querySelector("[data-agregar-ficha]");
+  if (!boton) return;          // agotada: no hay boton de compra
   boton.addEventListener("click", function () {
     const hayTalles = p.talles && p.talles.length;
     const hayColores = p.colores && p.colores.length;
