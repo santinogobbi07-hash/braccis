@@ -107,6 +107,28 @@ function archivoValido(nombre, extensiones) {
   return re.test(nombre) && nombre.indexOf("..") === -1;
 }
 
+/* La columna "foto" acepta tres cosas:
+     1. un nombre de archivo de img/prendas/       somos.jpg
+     2. el link de "Compartir" de Google Drive      https://drive.google.com/file/d/.../view
+     3. un link directo a una imagen                https://i.ibb.co/.../foto.jpg
+   El link de Drive no es la imagen sino una pagina para verla, asi que se
+   convierte a la direccion de la imagen en si (y ya achicada a 1200 px).
+   Solo se aceptan links https: nada de "javascript:", "data:" ni "http:".
+   Devuelve "" si no entiende lo que hay en la celda. */
+function resolverFoto(valor) {
+  const v = String(valor || "").trim();
+  if (!v) return "";
+  if (archivoValido(v, "jpe?g|png|webp")) return "img/prendas/" + v;
+
+  const drive = v.match(
+    /^https:\/\/(?:drive|docs)\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:[^#]*&)?id=|thumbnail\?(?:[^#]*&)?id=)([\w-]{20,})/
+  );
+  if (drive) return "https://lh3.googleusercontent.com/d/" + drive[1] + "=w1200";
+
+  if (/^https:\/\/[^\s"'<>\\]+$/i.test(v)) return v;
+  return "";
+}
+
 function categoriaDe(texto) {
   const t = texto.trim().toLowerCase();
   const c = CATEGORIAS.find(function (x) {
@@ -138,8 +160,9 @@ function aplicarFila(f) {
   const precio = aNumero(f.precio);
   if (precio !== null) p.precio = precio;
 
-  if (f.foto && archivoValido(f.foto, "jpe?g|png|webp")) {
-    p.foto = "img/prendas/" + f.foto;
+  const foto = resolverFoto(f.foto);
+  if (foto) {
+    p.foto = foto;
   } else if (nueva) {
     PRODUCTOS.pop();          // sin una foto valida, la prenda nueva no entra
     return;

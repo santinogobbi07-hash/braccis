@@ -356,6 +356,7 @@ function activarMiniaturas(modal) {
   botones.forEach(function (boton) {
     boton.addEventListener("click", function () {
       grande.src = boton.dataset.src;
+      grande.style.visibility = "";      // por si la foto anterior no habia cargado
       botones.forEach(function (b) { b.removeAttribute("aria-current"); });
       boton.setAttribute("aria-current", "true");
     });
@@ -396,3 +397,24 @@ function redibujarCatalogo() {
     dibujarGrilla();
   }
 }
+
+/* Si una foto no carga (por ejemplo, un link mal copiado en el Google
+   Sheets), en vez del icono de imagen rota se muestra el recuadro con la
+   inicial de la prenda. Se escucha en "captura" porque el error de una
+   imagen no sube por el documento. */
+document.addEventListener("error", function (e) {
+  const img = e.target;
+  if (!img || img.tagName !== "IMG") return;
+
+  const figura = img.closest(".producto__figura");
+  if (figura) {
+    const reemplazo = document.createElement("div");
+    reemplazo.className = "producto__placeholder";
+    reemplazo.textContent = (img.alt || "·").charAt(0).toUpperCase();
+    img.replaceWith(reemplazo);
+    return;
+  }
+  if (img.closest(".modal__figura, .miniatura, .carrito__foto")) {
+    img.style.visibility = "hidden";
+  }
+}, true);

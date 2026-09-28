@@ -131,7 +131,7 @@ desde un Google Sheets. **No hace falta tocar código.**
 | **nombre** | Como se ve en la web | `Remera Somos` |
 | **categoria** | Remeras, Camisas, Blusas, Tejidos o Jeans | `Remeras` |
 | **precio** | Solo el número. Acepta con o sin puntos | `18500` o `18.500` |
-| **foto** | El nombre del archivo en `img/prendas/` | `somos.jpg` |
+| **foto** | El link de Google Drive de la foto (ver abajo), o el nombre de un archivo de `img/prendas/` | `https://drive.google.com/file/d/…` |
 | **visible** | `si` se muestra · `no` se oculta · `agotado` se muestra con cartel y sin poder comprarse | `agotado` |
 | **talles** | Separados por coma | `S, M, L, XL` |
 | **descripcion** | Un renglón | `Remera de algodón...` |
@@ -145,7 +145,25 @@ desde un Google Sheets. **No hace falta tocar código.**
   "Consultar precio".
 - **Prenda nueva**: agregá una fila con un `id` nuevo (sin espacios ni
   acentos, por ejemplo `remera-luna`), y completá nombre, categoria, precio
-  y foto. La foto se sube a `img/prendas/` con GitHub Desktop.
+  y foto.
+
+### Cómo cargar una foto desde Google Drive
+
+1. Entrá a [drive.google.com](https://drive.google.com) y subí la foto
+   (arrastrarla alcanza). Conviene una carpeta "Fotos Braccis".
+2. Clic derecho en la foto → **Compartir** → **Compartir**.
+3. Abajo, en "Acceso general", cambiá **Restringido** por
+   **Cualquier persona con el vínculo**. ⚠️ Sin esto la foto no se ve en la web.
+4. **Copiar vínculo** → **Listo**.
+5. Pegá ese link en la columna **foto** de la prenda.
+
+El sitio convierte solo el link de Drive en la imagen, y la achica a
+1200 px, así que no importa si la foto original pesa mucho.
+
+También sirve un link directo de cualquier servicio de imágenes (tiene
+que empezar con `https://`). Si el link está mal y la foto no carga, en
+la web aparece un recuadro con la inicial de la prenda en vez de una
+imagen rota: es la señal de que hay que revisar ese link.
 - **Los cambios tardan unos 5 minutos** en verse en la web: es la demora
   de Google al volver a publicar. Si no aparecen, esperá y recargá.
 - ⚠️ **Todo lo que está en ese Sheets es público** (cualquiera con el link
@@ -380,7 +398,7 @@ Lo que sí se cubrió:
 | Riesgo | Cómo está resuelto |
 |---|---|
 | Inyección de código por los datos | Todo lo que sale de `productos.js` y del Google Sheets se escapa antes de mostrarse (`esc()` en `catalogo.js`) |
-| Alguien edita el Google Sheets con mala intención | Las fotos y el video solo aceptan un nombre de archivo simple (nada de carpetas ni links raros); los precios solo aceptan números; los textos se muestran como texto, nunca como código |
+| Alguien edita el Google Sheets con mala intención | Las fotos aceptan un nombre de archivo simple o un link `https://` (se rechazan `javascript:`, `data:`, `http:` y carpetas); los precios solo aceptan números; los textos se muestran como texto, nunca como código |
 | Scripts de terceros | Ninguno. Solo la tipografía de Google |
 | Enlaces a otros sitios | Todos con `rel="noopener"` |
 | Robots de spam en el formulario | Campo trampa invisible en `contacto.html` |

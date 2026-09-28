@@ -25,11 +25,14 @@
   #                        conecte (ver README). Si no se usa, no molesta.
   # - connect-src        : docs.google.com y googleusercontent.com dejan leer
   #                        el Google Sheets publicado (precios y video).
+  # - img-src            : https: deja mostrar fotos subidas a Google Drive
+  #                        u otro servicio, pegadas en la columna "foto"
+  #                        del Google Sheets. Una imagen no ejecuta codigo.
   # - media-src          : el video de portada puede ser un archivo del sitio
   #                        o un link https (un video no ejecuta codigo).
   # - frame-ancestors    : nadie puede meter el sitio dentro de un iframe.
   #                        Evita que copien la pagina para enganar gente.
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io https://docs.google.com https://*.googleusercontent.com; media-src 'self' https:; form-action 'self' https://formspree.io; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://formspree.io https://docs.google.com https://*.googleusercontent.com; media-src 'self' https:; form-action 'self' https://formspree.io; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
 
   # Version vieja de lo anterior, para navegadores antiguos
   X-Frame-Options: DENY
