@@ -246,6 +246,16 @@ function abrirModal(id, opciones) {
     filas.push(fichaFila("Colores", '<div class="colores-lista" role="group" aria-label="Elegí un color">' + colores + '</div>'));
   }
 
+  // Cuantas unidades se agregan de una vez (mismos botones que el carrito)
+  if (!p.agotado) {
+    filas.push(fichaFila("Cantidad",
+      '<span class="carrito__cantidad cantidad-ficha">' +
+        '<button type="button" data-cant="-1" aria-label="Una menos">−</button>' +
+        '<span data-cant-valor aria-live="polite">1</span>' +
+        '<button type="button" data-cant="1" aria-label="Una más">+</button>' +
+      '</span>'));
+  }
+
   const precio = p.precio
     ? '<p style="font-size:1.25rem;margin-top:10px">' + esc(formatearPrecio(p.precio)) + '</p>'
     : (EMPRESA.sheetProductos ? '<p class="producto__precio--consultar" style="margin-top:10px">Consultar precio</p>' : "");
@@ -307,8 +317,36 @@ function abrirModal(id, opciones) {
 /* Eleccion de talle y color, y alta en el carrito */
 function activarCompra(modal, p) {
   const aviso = modal.querySelector("[data-aviso-ficha]");
+  const boton = modal.querySelector("[data-agregar-ficha]");
+  const valorCantidad = modal.querySelector("[data-cant-valor]");
   let talle = p.talles && p.talles.length === 1 ? p.talles[0] : "";
   let color = p.colores && p.colores.length === 1 ? p.colores[0].nombre : "";
+  let cantidad = 1;
+  const MAXIMO = 20;
+
+  // El boton dice cuantas se van a agregar: "Agregar 3 al carrito"
+  function ponerCantidad(n) {
+    cantidad = Math.min(MAXIMO, Math.max(1, n));
+    if (valorCantidad) valorCantidad.textContent = cantidad;
+    if (boton) boton.textContent = cantidad > 1 ? "Agregar " + cantidad + " al carrito" : "Agregar al carrito";
+  }
+
+  // Si esa combinacion ya esta en el carrito, se avisa cuantas hay
+  function avisarLasQueYaHay() {
+    if (!aviso || typeof Carrito === "undefined") return;
+    const ya = (talle || !(p.talles && p.talles.length)) ? Carrito.cuantas(p.id, talle, color) : 0;
+    aviso.textContent = ya ? "Ya tenés " + ya + " en el carrito" + (detalleEleccion() ? " (" + detalleEleccion() + ")" : "") + "." : "";
+  }
+
+  function detalleEleccion() {
+    return [talle ? "talle " + talle : "", color].filter(Boolean).join(" · ");
+  }
+
+  modal.querySelectorAll("[data-cant]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      ponerCantidad(cantidad + Number(b.getAttribute("data-cant")));
+    });
+  });
 
   function marcar(selector, atributo, valor) {
     modal.querySelectorAll(selector).forEach(function (b) {
@@ -318,32 +356,35 @@ function activarCompra(modal, p) {
   // Si hay una sola opcion, ya viene elegida
   if (talle) marcar("[data-talle]", "data-talle", talle);
   if (color) marcar("[data-color]", "data-color", color);
+  if (!boton) return;          // agotada: no hay boton de compra
+  avisarLasQueYaHay();
 
   modal.querySelectorAll("[data-talle]").forEach(function (b) {
     b.addEventListener("click", function () {
       talle = b.getAttribute("data-talle");
       marcar("[data-talle]", "data-talle", talle);
-      aviso.textContent = "";
+      avisarLasQueYaHay();
     });
   });
   modal.querySelectorAll("[data-color]").forEach(function (b) {
     b.addEventListener("click", function () {
       color = b.getAttribute("data-color");
       marcar("[data-color]", "data-color", color);
-      aviso.textContent = "";
+      avisarLasQueYaHay();
     });
   });
 
-  const boton = modal.querySelector("[data-agregar-ficha]");
-  if (!boton) return;          // agotada: no hay boton de compra
   boton.addEventListener("click", function () {
     const hayTalles = p.talles && p.talles.length;
     const hayColores = p.colores && p.colores.length;
     if (hayTalles && !talle) { aviso.textContent = "Elegí un talle."; return; }
     if (hayColores && !color) { aviso.textContent = "Elegí un color."; return; }
     if (typeof Carrito === "undefined") return;
-    Carrito.agregar(p.id, talle, color);
-    aviso.textContent = "Listo, se agregó al carrito.";
+    const agregadas = cantidad;
+    const total = Carrito.agregar(p.id, talle, color, agregadas);
+    aviso.textContent = "Listo, " + (agregadas === 1 ? "agregaste 1" : "agregaste " + agregadas) +
+      " al carrito." + (total > agregadas ? " Ahora tenés " + total + (detalleEleccion() ? " (" + detalleEleccion() + ")" : "") + "." : "");
+    ponerCantidad(1);
   });
 }
 

@@ -760,3 +760,7 @@ body {
   font-size: 1.1rem;
   color: var(--tinta);
 }
+
+/* Selector de cantidad en la ficha de la prenda (reusa los botones del carrito) */
+.cantidad-ficha { margin-top: 0; }
+.cantidad-ficha [data-cant-valor] { min-width: 1.4em; text-align: center; font-variant-numeric: tabular-nums; }

@@ -180,8 +180,11 @@ La plantilla se puede regenerar con `node herramientas/armar_plantilla.js`.
 
 ## 1 ter. Carrito, pedido por WhatsApp y catálogo PDF
 
-- **Carrito**: en la ficha de cada prenda se elige talle (y color si tiene)
-  y se agrega. El carrito queda guardado en el navegador del cliente.
+- **Carrito**: en la ficha de cada prenda se elige talle (y color si tiene),
+  la cantidad (de 1 a 20) y se agrega. El botón dice cuántas se agregan
+  ("Agregar 3 al carrito") y, si esa prenda con ese talle ya estaba en el
+  carrito, avisa cuántas hay. El carrito queda guardado en el navegador
+  del cliente.
 - **Finalizar pedido**: pide el teléfono obligatorio y abre WhatsApp con
   el mensaje listo, dirigido al número de `js/config.js`:
   > Hola, mi teléfono es 11 5555-1234. Pedido: 1x Remera Somos · Talle M ·

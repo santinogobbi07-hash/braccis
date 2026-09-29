@@ -45,16 +45,29 @@ const Carrito = (function () {
   }
 
   /* ---------- Acciones ---------- */
-  function agregar(id, talle, color) {
-    if (!producto(id)) return;
-    const igual = items.find(function (i) {
+  function buscar(id, talle, color) {
+    return items.find(function (i) {
       return i.id === id && i.talle === (talle || "") && i.color === (color || "");
     });
-    if (igual) igual.cantidad += 1;
-    else items.push({ id: id, talle: talle || "", color: color || "", cantidad: 1 });
+  }
+
+  // Devuelve cuantas quedaron en el carrito de esa prenda, talle y color
+  function agregar(id, talle, color, cantidad) {
+    if (!producto(id)) return 0;
+    const n = Math.max(1, Math.floor(Number(cantidad) || 1));
+    const igual = buscar(id, talle, color);
+    if (igual) igual.cantidad += n;
+    else items.push({ id: id, talle: talle || "", color: color || "", cantidad: n });
     guardar();
     dibujar();
     mostrarAviso();
+    return (igual || buscar(id, talle, color)).cantidad;
+  }
+
+  // Cuantas hay ya en el carrito de esa prenda, talle y color
+  function cuantas(id, talle, color) {
+    const i = buscar(id, talle, color);
+    return i && producto(id) ? i.cantidad : 0;
   }
 
   function cambiarCantidad(indice, delta) {
@@ -307,7 +320,7 @@ const Carrito = (function () {
     if (e.key === CLAVE) { items = leer(); dibujar(); }
   });
 
-  return { agregar: agregar, abrir: abrir, cerrar: cerrar, vaciar: vaciar,
+  return { agregar: agregar, cuantas: cuantas, abrir: abrir, cerrar: cerrar, vaciar: vaciar,
            armarMensaje: armarMensaje, cantidadTotal: cantidadTotal,
            estaListo: function () { return listo; } };
 })();
