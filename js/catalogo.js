@@ -246,12 +246,13 @@ function abrirModal(id, opciones) {
     filas.push(fichaFila("Colores", '<div class="colores-lista" role="group" aria-label="Elegí un color">' + colores + '</div>'));
   }
 
-  // Cuantas unidades se agregan de una vez (mismos botones que el carrito)
+  // Cuantas unidades se agregan de una vez (mismos botones que el carrito).
+  // El numero tambien se puede escribir, para pedidos grandes.
   if (!p.agotado) {
     filas.push(fichaFila("Cantidad",
       '<span class="carrito__cantidad cantidad-ficha">' +
         '<button type="button" data-cant="-1" aria-label="Una menos">−</button>' +
-        '<span data-cant-valor aria-live="polite">1</span>' +
+        '<input type="number" data-cant-valor value="1" min="1" max="999" step="1" inputmode="numeric" aria-label="Cantidad">' +
         '<button type="button" data-cant="1" aria-label="Una más">+</button>' +
       '</span>'));
   }
@@ -274,6 +275,8 @@ function abrirModal(id, opciones) {
     : '<div class="ficha__compra">' +
         '<button type="button" class="btn btn--primario" data-agregar-ficha>Agregar al carrito</button>' +
         '<p class="ficha__aviso" data-aviso-ficha role="status"></p>' +
+        '<p class="ficha__mayorista" data-mayorista hidden>¿Comprás por cantidad? Tenemos precios mayoristas. ' +
+          '<a data-mayorista-link href="#" target="_blank" rel="noopener">Consultalos por WhatsApp</a></p>' +
       '</div>';
 
   modal.querySelector("[data-modal-contenido]").innerHTML = '' +
@@ -322,13 +325,31 @@ function activarCompra(modal, p) {
   let talle = p.talles && p.talles.length === 1 ? p.talles[0] : "";
   let color = p.colores && p.colores.length === 1 ? p.colores[0].nombre : "";
   let cantidad = 1;
-  const MAXIMO = 20;
+  const MAXIMO = 999;
+  const mayorista = modal.querySelector("[data-mayorista]");
+  const mayoristaLink = modal.querySelector("[data-mayorista-link]");
 
   // El boton dice cuantas se van a agregar: "Agregar 3 al carrito"
   function ponerCantidad(n) {
-    cantidad = Math.min(MAXIMO, Math.max(1, n));
-    if (valorCantidad) valorCantidad.textContent = cantidad;
+    cantidad = Math.min(MAXIMO, Math.max(1, Math.floor(Number(n)) || 1));
+    if (valorCantidad) valorCantidad.value = cantidad;
     if (boton) boton.textContent = cantidad > 1 ? "Agregar " + cantidad + " al carrito" : "Agregar al carrito";
+    avisarMayorista();
+  }
+
+  // Con muchas unidades (esta eleccion mas lo que ya hay en el carrito)
+  // se ofrecen los precios mayoristas: el carrito suma a precio minorista
+  function avisarMayorista() {
+    if (!mayorista) return;
+    const desde = Number(EMPRESA.mayoristaDesde) || 0;
+    const enCarrito = typeof Carrito !== "undefined" ? Carrito.cantidadTotal() : 0;
+    const mostrar = desde > 0 && cantidad + enCarrito >= desde;
+    mayorista.hidden = !mostrar;
+    if (mostrar) {
+      const cod = p.codigo ? " (cód. " + p.codigo + ")" : "";
+      mayoristaLink.href = linkWhatsapp("¡Hola! Quiero consultar precios mayoristas. Me interesa la prenda " +
+        p.nombre + cod + (detalleEleccion() ? ", " + detalleEleccion() : "") + ": " + cantidad + " unidades.");
+    }
   }
 
   // Si esa combinacion ya esta en el carrito, se avisa cuantas hay
@@ -347,6 +368,19 @@ function activarCompra(modal, p) {
       ponerCantidad(cantidad + Number(b.getAttribute("data-cant")));
     });
   });
+  if (valorCantidad) {
+    // Mientras escribe se actualiza el boton; al salir del campo se corrige
+    // si puso algo invalido (vacio, 0, letras, mas de 999)
+    valorCantidad.addEventListener("input", function () {
+      const n = Math.floor(Number(valorCantidad.value));
+      if (n >= 1) {
+        cantidad = Math.min(MAXIMO, n);
+        if (boton) boton.textContent = cantidad > 1 ? "Agregar " + cantidad + " al carrito" : "Agregar al carrito";
+        avisarMayorista();
+      }
+    });
+    valorCantidad.addEventListener("change", function () { ponerCantidad(valorCantidad.value); });
+  }
 
   function marcar(selector, atributo, valor) {
     modal.querySelectorAll(selector).forEach(function (b) {
@@ -358,12 +392,14 @@ function activarCompra(modal, p) {
   if (color) marcar("[data-color]", "data-color", color);
   if (!boton) return;          // agotada: no hay boton de compra
   avisarLasQueYaHay();
+  avisarMayorista();
 
   modal.querySelectorAll("[data-talle]").forEach(function (b) {
     b.addEventListener("click", function () {
       talle = b.getAttribute("data-talle");
       marcar("[data-talle]", "data-talle", talle);
       avisarLasQueYaHay();
+      avisarMayorista();
     });
   });
   modal.querySelectorAll("[data-color]").forEach(function (b) {
@@ -371,6 +407,7 @@ function activarCompra(modal, p) {
       color = b.getAttribute("data-color");
       marcar("[data-color]", "data-color", color);
       avisarLasQueYaHay();
+      avisarMayorista();
     });
   });
 

@@ -51,6 +51,13 @@ const EMPRESA = {
   sheetProductos: "https://docs.google.com/spreadsheets/d/e/2PACX-1vT1-0hjIajs9ZoIuhltFO_u-W4CXn8r7SBb6Hyx3cZkMAgGb3sxOUUbvbHKmp5XgyzCHzI_eQ3K2fLD/pub?gid=287490435&single=true&output=csv",
   sheetAjustes: "https://docs.google.com/spreadsheets/d/e/2PACX-1vT1-0hjIajs9ZoIuhltFO_u-W4CXn8r7SBb6Hyx3cZkMAgGb3sxOUUbvbHKmp5XgyzCHzI_eQ3K2fLD/pub?gid=1246368891&single=true&output=csv",
 
+  // Venta mayorista: desde cuantas unidades de una misma prenda (o en
+  // todo el carrito) se le avisa al cliente que hay precios mayoristas y
+  // se le ofrece consultarlos por WhatsApp. OJO: 12 es un valor de
+  // ejemplo, CONFIRMAR CON BRACCIS su minimo mayorista real.
+  // En 0 no se muestra el aviso.
+  mayoristaDesde: 12,
+
   // Catalogo en PDF que se descarga desde el menu
   catalogoPdf: "docs/catalogo-braccis-pv2027.pdf",
 

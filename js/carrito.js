@@ -16,6 +16,7 @@ const Carrito = (function () {
   const CLAVE = "braccis-carrito";
   let items = leer();
   let listo = false;     // true cuando ya se cargo el Google Sheets (si hay)
+  let mayorista = false; // casilla "Es una compra mayorista" del carrito
 
   /* ---------- Guardado ---------- */
   function leer() {
@@ -102,7 +103,9 @@ const Carrito = (function () {
     return [i.talle ? "Talle " + i.talle : "", i.color].filter(Boolean).join(" · ");
   }
 
-  function armarMensaje(telefono) {
+  // Si es mayorista se aclara al principio, y el total se marca como
+  // minorista: el precio real lo pasa Braccis por WhatsApp
+  function armarMensaje(telefono, esMayorista) {
     let total = 0;
     let faltanPrecios = false;
     const lineas = vigentes().map(function (i) {
@@ -118,6 +121,12 @@ const Carrito = (function () {
       }
       return i.cantidad + "x " + p.nombre + (extra ? " · " + extra : "") + " (" + precio + ")";
     });
+    if (esMayorista) {
+      return "Hola, mi teléfono es " + telefono + ". " +
+             "Es una compra MAYORISTA: ¿me pasan los precios mayoristas? " +
+             "Pedido: " + lineas.join(", ") + ". " +
+             "Total a precio minorista: " + textoTotal(total, faltanPrecios);
+    }
     return "Hola, mi teléfono es " + telefono + ". " +
            "Pedido: " + lineas.join(", ") + ". " +
            "Total: " + textoTotal(total, faltanPrecios);
@@ -249,6 +258,12 @@ const Carrito = (function () {
       '</div>' +
       (faltanPrecios ? '<p class="carrito__nota">Hay prendas con precio a confirmar: te lo pasamos por WhatsApp.</p>' : "") +
       '<form class="carrito__form" data-carrito-form novalidate>' +
+        (hayQueOfrecerMayorista()
+          ? '<label class="carrito__mayorista">' +
+              '<input type="checkbox" data-carrito-mayorista' + (mayorista ? " checked" : "") + '>' +
+              '<span>Es una compra mayorista (para revender). Te pasamos los precios mayoristas por WhatsApp.</span>' +
+            '</label>'
+          : "") +
         '<div class="campo">' +
           '<label for="carrito-telefono">Tu teléfono</label>' +
           '<input type="tel" id="carrito-telefono" name="telefono" autocomplete="tel" inputmode="tel" required placeholder="Ej: 11 5555-1234">' +
@@ -258,6 +273,15 @@ const Carrito = (function () {
       '</form>';
 
     pie.querySelector("[data-carrito-form]").addEventListener("submit", finalizar);
+    const casilla = pie.querySelector("[data-carrito-mayorista]");
+    if (casilla) casilla.addEventListener("change", function () { mayorista = casilla.checked; });
+  }
+
+  // Con muchas unidades se ofrece marcar el pedido como mayorista
+  // (EMPRESA.mayoristaDesde en config.js; en 0 no se ofrece nunca)
+  function hayQueOfrecerMayorista() {
+    const desde = Number(EMPRESA.mayoristaDesde) || 0;
+    return desde > 0 && cantidadTotal() >= desde;
   }
 
   function finalizar(e) {
@@ -273,7 +297,8 @@ const Carrito = (function () {
     }
     error.textContent = "";
 
-    window.open(linkWhatsapp(armarMensaje(telefono)), "_blank", "noopener");
+    const esMayorista = hayQueOfrecerMayorista() && mayorista;
+    window.open(linkWhatsapp(armarMensaje(telefono, esMayorista)), "_blank", "noopener");
 
     // No se vacia solo: si el cliente cerro WhatsApp sin mandar, no pierde el pedido
     document.querySelector("[data-carrito-pie]").innerHTML = '' +
