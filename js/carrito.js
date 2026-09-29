@@ -226,7 +226,7 @@ const Carrito = (function () {
               '<button type="button" class="carrito__quitar" data-accion="quitar" data-indice="' + n + '">Quitar</button>' +
             '</div>' +
           '</div>' +
-          '<p class="carrito__precio">' + esc(precio) + '</p>' +
+          '<p class="carrito__precio' + (p.precio ? '' : ' carrito__precio--consultar') + '">' + esc(precio) + '</p>' +
         '</div>';
     }).join("");
 
