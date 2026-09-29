@@ -725,3 +725,38 @@ body {
 
 /* En el celular "Precio a confirmar" no entra en una linea: se parte en dos */
 .carrito__precio--consultar { white-space: normal; max-width: 9ch; text-align: right; color: var(--tinta-soft); font-size: .8rem; }
+
+/* ---------- Pie: datos legales (arrepentimiento, privacidad, reclamos) ---------- */
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 28px;
+  padding-top: 24px;
+  font-size: .8rem;
+  color: rgba(250, 247, 242, .55);
+}
+.footer__legal-links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.footer__legal-links a { text-decoration: underline; text-underline-offset: 3px; }
+.footer__legal-datos { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
+.footer__legal-datos:not(:has(> :not([hidden]))) { display: none; }
+.footer__fiscal img { display: block; height: 56px; width: auto; }
+
+/* ---------- Paginas legales (arrepentimiento y privacidad) ---------- */
+.texto-legal { max-width: 68ch; margin-top: 36px; display: grid; gap: 30px; }
+.texto-legal h2 { font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--acento); font-weight: 500; margin-bottom: 8px; }
+.texto-legal p, .texto-legal li { color: var(--tinta-soft); }
+.texto-legal ul { display: grid; gap: 6px; padding-left: 1.1em; list-style: disc; }
+.texto-legal a { text-decoration: underline; text-underline-offset: 3px; }
+.pasos { display: grid; gap: 22px; counter-reset: paso; }
+.pasos li { counter-increment: paso; display: grid; grid-template-columns: 34px 1fr; gap: 12px; color: var(--tinta-soft); }
+.pasos li::before {
+  content: counter(paso);
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  border: 1px solid var(--linea);
+  font-family: var(--display);
+  font-size: 1.1rem;
+  color: var(--tinta);
+}

@@ -26,7 +26,7 @@ import re
 import sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PAGINAS = ["index.html", "catalogo.html", "contacto.html"]
+PAGINAS = ["index.html", "catalogo.html", "contacto.html", "arrepentimiento.html", "privacidad.html"]
 
 
 def main():

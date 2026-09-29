@@ -44,7 +44,7 @@ function volcarDatosEmpresa() {
     // Si el dato esta vacio se esconde el bloque entero, para no dejar
     // una fila en blanco. Sirve para no publicar datos que no tenemos.
     if (!valor) {
-      const bloque = el.closest("li, .dato");
+      const bloque = el.closest("li, .dato, .dato-legal");
       if (bloque) bloque.hidden = true;
       else el.hidden = true;
       return;
@@ -65,6 +65,23 @@ function volcarDatosEmpresa() {
     el.href = linkWhatsapp();
     el.target = "_blank";
     el.rel = "noopener";
+  });
+
+  // Link oficial de reclamos de Defensa del Consumidor
+  document.querySelectorAll("[data-reclamos]").forEach(function (el) {
+    el.href = EMPRESA.reclamos;
+  });
+
+  // Cuadrito de Data fiscal de ARCA. Solo se acepta un link de ARCA/AFIP,
+  // para que un error de tipeo no termine mandando a otra pagina.
+  document.querySelectorAll("[data-fiscal]").forEach(function (el) {
+    const link = EMPRESA.dataFiscal || "";
+    if (!/^https?:\/\/([a-z0-9-]+\.)*(afip|arca)\.gob\.ar\//i.test(link)) {
+      el.hidden = true;
+      return;
+    }
+    el.href = link;
+    el.hidden = false;
   });
 }
 

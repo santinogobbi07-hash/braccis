@@ -194,6 +194,38 @@ La plantilla se puede regenerar con `node herramientas/armar_plantilla.js`.
 
 ---
 
+## 1 quater. Datos legales (venta online en Argentina)
+
+> No reemplaza el consejo de un contador o abogado: que Braccis lo confirme.
+
+En el pie de todas las páginas hay tres links que pide la Ley 24.240 de
+Defensa del Consumidor:
+
+- **Botón de arrepentimiento** (`arrepentimiento.html`, Res. 424/2020): la
+  clienta completa un formulario y la solicitud llega por WhatsApp.
+  **Braccis tiene que contestar cada una dentro de las 24 horas con un
+  número de trámite.** La clienta tiene 10 días corridos y la devolución
+  no le cuesta nada (el envío de vuelta lo paga Braccis).
+- **Política de privacidad** (`privacidad.html`, Ley 25.326). Si algún día
+  se agrega Google Analytics, un pixel de Meta, newsletter o el formulario
+  por mail, hay que actualizar ese texto.
+- **Defensa del consumidor: reclamos**: link oficial, en `EMPRESA.reclamos`.
+
+Faltan datos que tiene que pasar Braccis. Se cargan en `js/config.js` y
+aparecen solos en el pie; mientras estén vacíos no se ven:
+
+| Dato | Campo en `config.js` |
+|---|---|
+| Razón social (como figura en ARCA) | `razonSocial` |
+| CUIT | `cuit` |
+| Link del QR de Data fiscal (formulario 960 de ARCA) | `dataFiscal` |
+| Dirección completa, con número | `direccion` |
+
+Tampoco están publicadas las **condiciones de venta** (envíos, cambios,
+formas de pago): las tiene que definir Braccis.
+
+---
+
 ## 2. Cargar prendas
 
 Todas las prendas están en `js/productos.js`, una por renglón.
@@ -401,7 +433,8 @@ Lo que sí se cubrió:
 | Alguien edita el Google Sheets con mala intención | Las fotos aceptan un nombre de archivo simple o un link `https://` (se rechazan `javascript:`, `data:`, `http:` y carpetas); los precios solo aceptan números; los textos se muestran como texto, nunca como código |
 | Scripts de terceros | Ninguno. Solo la tipografía de Google |
 | Enlaces a otros sitios | Todos con `rel="noopener"` |
-| Robots de spam en el formulario | Campo trampa invisible en `contacto.html` |
+| Robots de spam en los formularios | Campo trampa invisible en `contacto.html` y `arrepentimiento.html` |
+| Link de Data fiscal mal pegado | Solo se acepta un link de `afip.gob.ar` o `arca.gob.ar` |
 | Cabeceras del servidor | Archivo `_headers` (lo lee Netlify al publicar) |
 | Contraseñas o claves en el código | No hay ninguna |
 | Los PDF del catálogo | Fuera de la carpeta que se publica |
@@ -409,6 +442,18 @@ Lo que sí se cubrió:
 **El archivo `_headers` tiene que subirse junto al resto.** Si se publica
 en un servicio que no lo lee (GitHub Pages, por ejemplo), esas protecciones
 no se aplican.
+
+**El mayor riesgo real está en las cuentas, no en el código:**
+
+- Verificación en dos pasos en la cuenta de Google (dueña de la planilla)
+  y en la de GitHub (dueña del sitio). Quien entre ahí cambia todo.
+- La planilla publicada la puede leer cualquiera que tenga el link:
+  **nunca poner costos, proveedores ni notas internas**.
+- Editar la planilla: solo personas puntuales, nunca "cualquiera con el
+  link puede editar".
+- La carpeta de fotos de Drive: solo fotos del catálogo.
+- El dominio, cuando lo compren: renovación automática y verificación en
+  dos pasos en esa cuenta.
 
 Dos cosas que quedan a criterio de ustedes:
 

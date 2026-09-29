@@ -131,6 +131,22 @@
         </div>
       </div>
 
+      <!-- Datos legales. Los tres links los pide la Ley de Defensa del
+           Consumidor. Razon social, CUIT y Data fiscal se completan en
+           js/config.js; mientras esten vacios no se muestran. -->
+      <div class="footer__legal">
+        <ul class="footer__legal-links">
+          <li><a href="arrepentimiento.html">Botón de arrepentimiento</a></li>
+          <li><a href="privacidad.html">Política de privacidad</a></li>
+          <li><a data-reclamos href="#" target="_blank" rel="noopener">Defensa del consumidor: reclamos</a></li>
+        </ul>
+        <p class="footer__legal-datos">
+          <span class="dato-legal" data-empresa="razonSocial"></span>
+          <span class="dato-legal">CUIT <span data-empresa="cuit"></span></span>
+          <a class="footer__fiscal" data-fiscal href="#" target="_F960AFIPInfo" rel="noopener" hidden><img src="https://www.afip.gob.ar/images/f960/DATAWEB.jpg" alt="Data fiscal de ARCA" loading="lazy"></a>
+        </p>
+      </div>
+
       <div class="footer__abajo">
         <span>&copy; <span data-anio></span> Braccis. Todos los derechos reservados.</span>
         <span>Primavera–Verano 2027</span>

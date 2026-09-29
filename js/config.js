@@ -52,7 +52,23 @@ const EMPRESA = {
   sheetAjustes: "https://docs.google.com/spreadsheets/d/e/2PACX-1vT1-0hjIajs9ZoIuhltFO_u-W4CXn8r7SBb6Hyx3cZkMAgGb3sxOUUbvbHKmp5XgyzCHzI_eQ3K2fLD/pub?gid=1246368891&single=true&output=csv",
 
   // Catalogo en PDF que se descarga desde el menu
-  catalogoPdf: "docs/catalogo-braccis-pv2027.pdf"
+  catalogoPdf: "docs/catalogo-braccis-pv2027.pdf",
+
+  // ---------- Datos legales (Ley 24.240 de Defensa del Consumidor) ----------
+  // Los tiene que pasar Braccis. Mientras esten vacios no se muestran.
+  // razonSocial: como figura en ARCA (ej. "Braccis S.R.L." o el nombre
+  //              y apellido del titular si es monotributista)
+  // cuit:        con guiones, ej. "30-12345678-9"
+  razonSocial: "",
+  cuit: "",
+
+  // Data fiscal de ARCA (ex AFIP): el link del codigo QR del formulario
+  // 960. Lo da ARCA al tramitarlo y empieza con "http://qr.afip.gob.ar/".
+  // Se pega entero aca y aparece solo el cuadrito en el pie de pagina.
+  dataFiscal: "",
+
+  // Pagina oficial para hacer reclamos de consumo (obligatorio mostrarla)
+  reclamos: "https://www.argentina.gob.ar/produccion/defensadelconsumidor/formulario"
 };
 
 /* --- Helpers usados por el resto del sitio --- */

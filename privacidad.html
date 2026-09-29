@@ -18,9 +18,8 @@
        ==================================== -->
   <meta name="robots" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Braccis | Indumentaria femenina</title>
-  <meta name="description" content="Braccis: indumentaria femenina, colección Primavera–Verano 2027. Remeras, jeans, tejidos, camisas y blusas.">
-
+  <title>Política de privacidad | Braccis</title>
+  <meta name="description" content="Qué datos usa Braccis, para qué y cómo pedir que los cambiemos o los borremos.">
 
 
   <!-- Lo que se ve al pegar el link en WhatsApp, Instagram o Facebook.
@@ -30,9 +29,9 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Braccis">
   <meta property="og:locale" content="es_AR">
-  <meta property="og:title" content="Braccis">
-  <meta property="og:description" content="Piezas que te acompañan siempre. Colección Primavera–Verano 2027.">
-  <meta property="og:url" content="https://santinogobbi07-hash.github.io/braccis/">
+  <meta property="og:title" content="Política de privacidad | Braccis">
+  <meta property="og:description" content="Qué datos usa Braccis y cómo pedir que los cambiemos o los borremos.">
+  <meta property="og:url" content="https://santinogobbi07-hash.github.io/braccis/privacidad.html">
   <meta property="og:image" content="https://santinogobbi07-hash.github.io/braccis/img/compartir.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -54,7 +53,7 @@
 
       <nav class="nav">
         <ul class="nav__lista">
-          <li><a class="nav__link" href="index.html" aria-current="page">Inicio</a></li>
+          <li><a class="nav__link" href="index.html">Inicio</a></li>
           <li><a class="nav__link" href="catalogo.html">Catálogo</a></li>
           <li><a class="nav__link" href="index.html#nosotros">Nosotros</a></li>
           <li><a class="nav__link" href="contacto.html">Contacto</a></li>
@@ -71,115 +70,52 @@
     </div>
   </header>
 
-  <!-- ============ HERO ============
-       El titulo y la bajada son las frases reales de la marca, tomadas
-       de las portadas de los catalogos. No inventar texto aca. -->
-  <section class="hero">
-    <!-- Video de portada: el link se carga desde el Google Sheets
-         (pestaña "Ajustes", fila video_portada). Si no hay video, o no
-         carga, queda la foto de siempre. Ver js/hoja.js -->
-    <video class="hero__video" muted loop playsinline preload="none"
-           poster="img/prendas/jeans-cird.jpg" aria-hidden="true" tabindex="-1"></video>
-    <div class="contenedor">
-      <p class="hero__antetitulo">Nueva colección · Primavera–Verano 2027</p>
-      <h1 class="hero__titulo">Piezas que<br>te acompañan siempre</h1>
-      <p class="hero__bajada">
-        Cuatro cápsulas: jeans, remeras, hilo, y camisas y blusas.
-      </p>
-      <div class="hero__acciones">
-        <a class="btn btn--primario" href="catalogo.html">Ver catálogo</a>
-        <a class="btn btn--linea" href="contacto.html">Contactanos</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ CATEGORIAS ============ -->
+  <!-- ============ POLITICA DE PRIVACIDAD ============
+       Pedida por la Ley 25.326 de Proteccion de Datos Personales.
+       Describe lo que el sitio hace HOY. Si se agrega algo que junte
+       datos (Google Analytics, pixel de Meta, formulario por mail,
+       newsletter), hay que actualizar este texto. -->
   <section class="seccion">
     <div class="contenedor">
-      <div class="centrado aparece">
-        <p class="antetitulo">Colección</p>
-        <h2 class="titulo-seccion">Nuestras líneas</h2>
-        <p class="bajada">Cada prenda lleva nombre propio. Elegí por tipo o mirate el catálogo completo.</p>
-      </div>
+      <p class="antetitulo">Tus datos</p>
+      <h1 class="titulo-seccion">Política de privacidad</h1>
+      <p class="bajada">Qué datos tuyos usamos, para qué y cómo podés pedir que los cambiemos o los borremos.</p>
 
-      <div class="grilla-categorias aparece">
-        <a class="categoria" href="catalogo.html?categoria=remeras">
-          <img src="img/prendas/sunflower.jpg" alt="Remeras Braccis" loading="lazy">
-          <span class="categoria__etiqueta">Remeras</span>
-        </a>
-        <a class="categoria" href="catalogo.html?categoria=jeans">
-          <img src="img/prendas/jeans-seiano.jpg" alt="Jeans Braccis" loading="lazy">
-          <span class="categoria__etiqueta">Jeans</span>
-        </a>
-        <a class="categoria" href="catalogo.html?categoria=tejidos">
-          <img src="img/prendas/cowl-neck.jpg" alt="Tejidos Braccis" loading="lazy">
-          <span class="categoria__etiqueta">Tejidos</span>
-        </a>
-        <a class="categoria" href="catalogo.html?categoria=camisas">
-          <img src="img/prendas/ons.jpg" alt="Camisas Braccis" loading="lazy">
-          <span class="categoria__etiqueta">Camisas</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ DESTACADOS ============ -->
-  <section class="seccion seccion--alt">
-    <div class="contenedor">
-      <div class="centrado aparece">
-        <p class="antetitulo">Selección</p>
-        <h2 class="titulo-seccion">Prendas destacadas</h2>
-      </div>
-
-      <!-- Se llena solo desde js/productos.js (las que tienen destacado: true) -->
-      <div class="grilla-productos" data-destacados style="margin-top:52px"></div>
-
-      <div class="centrado">
-        <a class="btn btn--linea" href="catalogo.html">Ver todo el catálogo</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ NOSOTROS ============ -->
-  <section class="seccion" id="nosotros">
-    <div class="contenedor dos-columnas">
-      <div class="aparece">
-        <p class="antetitulo">La colección</p>
-        <h2 class="titulo-seccion">Diseños que te acompañan,<br>calidad que te representa</h2>
-        <p class="bajada">
-          <!-- El titulo de arriba es la frase de marca que aparece en todas
-               las paginas de los catalogos. Lo de abajo describe la coleccion
-               con datos verificables. Si quieren sumar la historia de la
-               empresa (cuando arranco, quienes son), va en este lugar. -->
-          La colección Primavera–Verano 2027 se organiza en cuatro cápsulas:
-          jeans, remeras, hilo, y camisas y blusas. Son 53 prendas, y cada una
-          lleva su nombre propio.
-        </p>
-        <p class="bajada">
-          En la ficha de cada prenda vas a encontrar el código, los talles y
-          todos los colores disponibles. Si necesitás algo puntual,
-          escribinos y te asesoramos.
-        </p>
-        <a class="btn btn--primario" style="margin-top:26px" href="contacto.html">Hablemos</a>
-      </div>
-
-      <div class="aparece">
-        <div class="producto__figura" style="aspect-ratio:4/5">
-          <!-- Conviene reemplazarla por una foto real del taller -->
-          <img src="img/prendas/plumety.jpg" alt="Prendas Braccis" loading="lazy">
+      <div class="texto-legal">
+        <div>
+          <h2>Qué datos nos llegan</h2>
+          <p>Solo los que vos nos mandás: tu nombre, teléfono, email y lo que escribas cuando completás el formulario de contacto, hacés un pedido desde el carrito o usás el botón de arrepentimiento. Todo eso nos llega por WhatsApp, cuando vos apretás enviar.</p>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ============ CTA ============ -->
-  <section class="seccion seccion--alt">
-    <div class="contenedor centrado aparece">
-      <h2 class="titulo-seccion">Te ayudamos a elegir</h2>
-      <p class="bajada">Contanos qué estás buscando y te pasamos disponibilidad, talles y precios.</p>
-      <div class="hero__acciones" style="margin-top:32px">
-        <a class="btn btn--wsp" data-wsp href="#">Escribinos por WhatsApp</a>
-        <a class="btn btn--linea" href="contacto.html">Formulario de contacto</a>
+        <div>
+          <h2>Para qué los usamos</h2>
+          <p>Únicamente para responder tu consulta, armar tu pedido y hacer el seguimiento. No los vendemos, no los compartimos con otras empresas y no te vamos a mandar publicidad si no nos lo pedís.</p>
+        </div>
+
+        <div>
+          <h2>Lo que queda en tu dispositivo</h2>
+          <p>El carrito se guarda en tu propio navegador, para que no pierdas las prendas si cerrás la página. No nos llega a nosotros y lo podés borrar vaciando el carrito. Tu teléfono no se guarda. Este sitio no usa cookies de publicidad ni herramientas para seguir lo que hacés.</p>
+        </div>
+
+        <div>
+          <h2>Servicios que usa el sitio</h2>
+          <ul>
+            <li>GitHub Pages, donde está alojada la página.</li>
+            <li>Google Fonts, para las tipografías, y Google Sheets, para los precios y el catálogo.</li>
+            <li>WhatsApp, por donde nos llegan los mensajes.</li>
+          </ul>
+          <p style="margin-top:8px">Como cualquier sitio de internet, estos servicios pueden registrar datos técnicos de la visita, como la dirección IP.</p>
+        </div>
+
+        <div>
+          <h2>Tus derechos</h2>
+          <p>Podés pedirnos ver, corregir o borrar tus datos cuando quieras, sin costo, escribiéndonos por <a data-wsp href="#">WhatsApp</a>. Te respondemos dentro de los plazos de la Ley 25.326.</p>
+        </div>
+
+        <div>
+          <h2>Autoridad de control</h2>
+          <p>La Agencia de Acceso a la Información Pública, en su carácter de Órgano de Control de la Ley N° 25.326, tiene la atribución de atender las denuncias y reclamos que interpongan quienes resulten afectados en sus derechos por incumplimiento de las normas vigentes en materia de protección de datos personales. <a href="https://www.argentina.gob.ar/aaip/datospersonales" target="_blank" rel="noopener">Más información</a>.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -237,17 +173,11 @@
     </div>
   </footer>
 
-  <!-- WhatsApp flotante -->
   <a class="wsp-flotante" data-wsp href="#" aria-label="Escribinos por WhatsApp">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" aria-hidden="true">
       <path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.42 9.42 0 0 1-4.8-1.32l-.34-.2-3.57.94.95-3.48-.22-.36a9.4 9.4 0 0 1-1.44-5.02c0-5.2 4.23-9.43 9.44-9.43a9.37 9.37 0 0 1 6.67 2.77 9.35 9.35 0 0 1 2.76 6.67c0 5.2-4.23 9.43-9.44 9.43zM20.14 3.85A11.28 11.28 0 0 0 12.05.5C5.8.5.72 5.58.72 11.82c0 2 .52 3.95 1.52 5.67L.62 23.5l6.15-1.61a11.3 11.3 0 0 0 5.28 1.34h.01c6.24 0 11.32-5.08 11.32-11.32 0-3.03-1.18-5.87-3.24-8.01z"/>
     </svg>
   </a>
-
-  <!-- Modal de detalle de prenda -->
-  <div class="modal" data-modal>
-    <div class="modal__caja" data-modal-contenido></div>
-  </div>
 
   <script src="js/config.js"></script>
   <script src="js/productos.js"></script>
