@@ -198,7 +198,7 @@ La plantilla se puede regenerar con `node herramientas/armar_plantilla.js`.
   sumaste a nuestro canal?" con "Unirme al canal" y "Continuar con mi
   pedido" (recién ese botón abre WhatsApp). La cruz, el fondo oscuro o
   Escape vuelven al carrito sin enviar. Vacío = no aparece y el pedido va
-  directo. **Falta que Braccis pase el link.**
+  directo. Conectado al canal BRACCIS JEANS.
 - **Finalizar pedido**: pide el teléfono obligatorio y abre WhatsApp con
   el mensaje listo, dirigido al número de `js/config.js`:
   > Hola, mi teléfono es 11 5555-1234. Pedido: 1x Remera Somos · Talle M ·
