@@ -58,6 +58,12 @@ const EMPRESA = {
   // En 0 no se muestra el aviso.
   mayoristaDesde: 12,
 
+  // Link del canal de WhatsApp de Braccis. Si tiene un link, al tocar
+  // "Finalizar pedido" se pregunta primero "¿Ya te sumaste a nuestro canal
+  // de WhatsApp?". Vacio = no se pregunta y se va directo al pedido.
+  // Tiene que empezar con https://whatsapp.com/channel/
+  canalWhatsapp: "",
+
   // Catalogo en PDF que se descarga desde el menu
   catalogoPdf: "docs/catalogo-braccis-pv2027.pdf",
 

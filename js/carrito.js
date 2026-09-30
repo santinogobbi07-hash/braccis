@@ -17,6 +17,7 @@ const Carrito = (function () {
   let items = leer();
   let listo = false;     // true cuando ya se cargo el Google Sheets (si hay)
   let mayorista = false; // casilla "Es una compra mayorista" del carrito
+  let pedidoPendiente = null; // teléfono y tipo, mientras se muestra el aviso del canal
 
   /* ---------- Guardado ---------- */
   function leer() {
@@ -130,13 +131,16 @@ const Carrito = (function () {
       }
       return i.cantidad + "x " + p.nombre + (extra ? " · " + extra : "") + " (" + precio + ")";
     });
+    // La primera linea le dice a Braccis de un vistazo que tipo de pedido es
     if (esMayorista) {
-      return "Hola, mi teléfono es " + telefono + ". " +
-             "Es una compra MAYORISTA: ¿me pasan los precios mayoristas? " +
+      return "TIPO DE PEDIDO: MAYORISTA\n" +
+             "Hola, mi teléfono es " + telefono + ". " +
+             "¿Me pasan los precios mayoristas? " +
              "Pedido: " + lineas.join(", ") + ". " +
              "Total a precio minorista: " + textoTotal(total, faltanPrecios);
     }
-    return "Hola, mi teléfono es " + telefono + ". " +
+    return "TIPO DE PEDIDO: MINORISTA\n" +
+           "Hola, mi teléfono es " + telefono + ". " +
            "Pedido: " + lineas.join(", ") + ". " +
            "Total: " + textoTotal(total, faltanPrecios);
   }
@@ -189,7 +193,8 @@ const Carrito = (function () {
       if (accion === "menos") cambiarCantidad(n, -1);
       if (accion === "quitar") quitar(n);
       if (accion === "vaciar") vaciar();
-      if (accion === "volver") dibujar();
+      if (accion === "continuar") enviarPedido();
+      if (accion === "volver") { pedidoPendiente = null; dibujar(); }
     });
   }
 
@@ -306,8 +311,36 @@ const Carrito = (function () {
     }
     error.textContent = "";
 
-    const esMayorista = hayQueOfrecerMayorista() && mayorista;
-    window.open(linkWhatsapp(armarMensaje(telefono, esMayorista)), "_blank", "noopener");
+    pedidoPendiente = { telefono: telefono, esMayorista: hayQueOfrecerMayorista() && mayorista };
+    if (linkCanal()) preguntarPorCanal();
+    else enviarPedido();
+  }
+
+  // Link del canal solo si es de WhatsApp: un error de tipeo en config.js
+  // no puede terminar mandando a la clienta a otra pagina
+  function linkCanal() {
+    const link = EMPRESA.canalWhatsapp || "";
+    return /^https:\/\/(www\.)?whatsapp\.com\/channel\/[A-Za-z0-9]+\/?$/.test(link) ? link : "";
+  }
+
+  // Aviso antes de abrir WhatsApp. Se muestra en el pie del mismo panel
+  // del carrito, con las clases que ya existen (sin estilos nuevos).
+  function preguntarPorCanal() {
+    document.querySelector("[data-carrito-pie]").innerHTML = '' +
+      '<p class="carrito__nota"><strong>¿Ya te sumaste a nuestro canal de WhatsApp?</strong> ' +
+        'Ahí publicamos las novedades de Braccis.</p>' +
+      '<a class="btn btn--linea" href="' + esc(linkCanal()) + '" target="_blank" rel="noopener">Unirme al canal</a>' +
+      '<div class="carrito__acciones">' +
+        '<button type="button" class="btn btn--wsp" data-accion="continuar">Continuar con el pedido</button>' +
+        '<button type="button" class="btn btn--linea" data-accion="volver">Cancelar</button>' +
+      '</div>';
+    document.querySelector('[data-accion="continuar"]').focus();
+  }
+
+  function enviarPedido() {
+    if (!pedidoPendiente) return;
+    window.open(linkWhatsapp(armarMensaje(pedidoPendiente.telefono, pedidoPendiente.esMayorista)), "_blank", "noopener");
+    pedidoPendiente = null;
 
     // No se vacia solo: si el cliente cerro WhatsApp sin mandar, no pierde el pedido
     document.querySelector("[data-carrito-pie]").innerHTML = '' +
