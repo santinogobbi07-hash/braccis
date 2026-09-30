@@ -193,8 +193,7 @@ const Carrito = (function () {
       if (accion === "menos") cambiarCantidad(n, -1);
       if (accion === "quitar") quitar(n);
       if (accion === "vaciar") vaciar();
-      if (accion === "continuar") enviarPedido();
-      if (accion === "volver") { pedidoPendiente = null; dibujar(); }
+      if (accion === "volver") dibujar();
     });
   }
 
@@ -311,8 +310,10 @@ const Carrito = (function () {
     }
     error.textContent = "";
 
+    // Se frena el envio: si hay canal, primero el aviso; WhatsApp se abre
+    // recien cuando tocan "Continuar con mi pedido"
     pedidoPendiente = { telefono: telefono, esMayorista: hayQueOfrecerMayorista() && mayorista };
-    if (linkCanal()) preguntarPorCanal();
+    if (linkCanal()) abrirAvisoCanal();
     else enviarPedido();
   }
 
@@ -323,18 +324,73 @@ const Carrito = (function () {
     return /^https:\/\/(www\.)?whatsapp\.com\/channel\/[A-Za-z0-9]+\/?$/.test(link) ? link : "";
   }
 
-  // Aviso antes de abrir WhatsApp. Se muestra en el pie del mismo panel
-  // del carrito, con las clases que ya existen (sin estilos nuevos).
-  function preguntarPorCanal() {
-    document.querySelector("[data-carrito-pie]").innerHTML = '' +
-      '<p class="carrito__nota"><strong>¿Ya te sumaste a nuestro canal de WhatsApp?</strong> ' +
-        'Ahí publicamos las novedades de Braccis.</p>' +
-      '<a class="btn btn--linea" href="' + esc(linkCanal()) + '" target="_blank" rel="noopener">Unirme al canal</a>' +
-      '<div class="carrito__acciones">' +
-        '<button type="button" class="btn btn--wsp" data-accion="continuar">Continuar con el pedido</button>' +
-        '<button type="button" class="btn btn--linea" data-accion="volver">Cancelar</button>' +
+  /* ---------- Aviso del canal de WhatsApp (pop-up) ----------
+     Ventana superpuesta que aparece al tocar "Finalizar pedido", antes
+     de abrir WhatsApp. Se arma una sola vez, igual que el panel.     */
+  function crearAvisoCanal() {
+    if (document.querySelector("[data-aviso-canal]")) return;
+    const aviso = document.createElement("div");
+    aviso.className = "aviso-canal";
+    aviso.setAttribute("data-aviso-canal", "");
+    aviso.hidden = true;
+    aviso.innerHTML = '' +
+      '<div class="aviso-canal__caja" role="dialog" aria-modal="true" ' +
+          'aria-labelledby="aviso-canal-titulo" aria-describedby="aviso-canal-texto">' +
+        '<button type="button" class="aviso-canal__cerrar" data-canal-cerrar aria-label="Cerrar y volver al carrito">&times;</button>' +
+        '<p class="antetitulo">Canal de WhatsApp</p>' +
+        '<h2 class="aviso-canal__titulo" id="aviso-canal-titulo">¿Ya te sumaste a nuestro canal?</h2>' +
+        '<p class="aviso-canal__texto" id="aviso-canal-texto">Sumate para enterarte de todas las novedades de Braccis.</p>' +
+        '<div class="aviso-canal__acciones">' +
+          '<a class="btn btn--wsp" data-canal-link href="#" target="_blank" rel="noopener">Unirme al canal</a>' +
+          '<button type="button" class="btn btn--linea" data-canal-continuar>Continuar con mi pedido</button>' +
+        '</div>' +
       '</div>';
-    document.querySelector('[data-accion="continuar"]').focus();
+    document.body.appendChild(aviso);
+
+    // "Continuar con mi pedido": recien aca se abre WhatsApp con el pedido
+    aviso.querySelector("[data-canal-continuar]").addEventListener("click", function () {
+      cerrarAvisoCanal();
+      enviarPedido();
+    });
+    // La cruz o un clic en el fondo oscuro: vuelve al carrito sin enviar
+    aviso.querySelector("[data-canal-cerrar]").addEventListener("click", cancelarAvisoCanal);
+    aviso.addEventListener("click", function (e) {
+      if (e.target === aviso) cancelarAvisoCanal();
+    });
+    // El foco no se escapa de la ventana mientras esta abierta (teclado)
+    aviso.addEventListener("keydown", function (e) {
+      if (e.key !== "Tab") return;
+      const enfocables = aviso.querySelectorAll("a[href], button");
+      const primero = enfocables[0];
+      const ultimo = enfocables[enfocables.length - 1];
+      if (e.shiftKey && document.activeElement === primero) { e.preventDefault(); ultimo.focus(); }
+      else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primero.focus(); }
+    });
+  }
+
+  function abrirAvisoCanal() {
+    const aviso = document.querySelector("[data-aviso-canal]");
+    if (!aviso) { enviarPedido(); return; }
+    aviso.querySelector("[data-canal-link]").href = linkCanal();
+    aviso.hidden = false;
+    aviso.querySelector("[data-canal-link]").focus();
+  }
+
+  function avisoCanalAbierto() {
+    const aviso = document.querySelector("[data-aviso-canal]");
+    return !!aviso && !aviso.hidden;
+  }
+
+  function cerrarAvisoCanal() {
+    const aviso = document.querySelector("[data-aviso-canal]");
+    if (aviso) aviso.hidden = true;
+  }
+
+  function cancelarAvisoCanal() {
+    cerrarAvisoCanal();
+    pedidoPendiente = null;
+    const boton = document.querySelector("[data-carrito-form] button[type=submit]");
+    if (boton) boton.focus();
   }
 
   function enviarPedido() {
@@ -362,11 +418,15 @@ const Carrito = (function () {
   /* ---------- Arranque ---------- */
   document.addEventListener("DOMContentLoaded", function () {
     crearPanel();
+    crearAvisoCanal();
     document.querySelectorAll(".carrito-boton").forEach(function (b) {
       b.addEventListener("click", abrir);
     });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") cerrar();
+      if (e.key !== "Escape") return;
+      // Con el aviso del canal abierto, Escape cierra solo el aviso
+      if (avisoCanalAbierto()) cancelarAvisoCanal();
+      else cerrar();
     });
     dibujar();
     if (!EMPRESA.sheetProductos) listo = true;

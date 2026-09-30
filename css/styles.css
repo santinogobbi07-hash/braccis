@@ -782,3 +782,37 @@ body {
 .ficha__mayorista a { color: var(--tinta); text-decoration: underline; text-underline-offset: 3px; }
 .carrito__mayorista { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; font-size: .85rem; color: var(--tinta-soft); cursor: pointer; }
 .carrito__mayorista input { margin-top: 3px; accent-color: var(--tinta); }
+
+/* ---------- Aviso del canal de WhatsApp (pop-up antes de enviar el pedido) ----------
+   Va por encima del panel del carrito (z-index 110). Mismo fondo oscuro
+   que el carrito y misma caja crema que la ficha de prenda. */
+.aviso-canal {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(31, 27, 24, .55);
+}
+.aviso-canal__caja {
+  position: relative;
+  width: min(420px, 100%);
+  padding: 44px 32px 32px;
+  background: var(--crema);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  text-align: center;
+}
+.aviso-canal__cerrar { position: absolute; top: 12px; right: 16px; font-size: 1.8rem; line-height: 1; }
+.aviso-canal__titulo { font-family: var(--display); font-size: 1.9rem; font-weight: 500; line-height: 1.15; margin-top: 8px; }
+.aviso-canal__texto { color: var(--tinta-soft); margin-top: 12px; }
+.aviso-canal__acciones { display: grid; gap: 10px; margin-top: 28px; }
+.aviso-canal__acciones .btn { width: 100%; }
+@media (prefers-reduced-motion: no-preference) {
+  .aviso-canal:not([hidden]) .aviso-canal__caja { animation: aviso-canal-entra .25s ease; }
+}
+@keyframes aviso-canal-entra {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}

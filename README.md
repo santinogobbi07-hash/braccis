@@ -194,9 +194,11 @@ La plantilla se puede regenerar con `node herramientas/armar_plantilla.js`.
 - **Tipo de pedido**: el mensaje de WhatsApp empieza siempre con
   `TIPO DE PEDIDO: MINORISTA` o `TIPO DE PEDIDO: MAYORISTA`.
 - **Canal de WhatsApp**: si `EMPRESA.canalWhatsapp` tiene el link del canal,
-  al tocar "Finalizar pedido" se pregunta "¿Ya te sumaste a nuestro canal
-  de WhatsApp?" con los botones Unirme al canal / Continuar con el pedido /
-  Cancelar. Vacío = no se pregunta. **Falta que Braccis pase el link.**
+  al tocar "Finalizar pedido" aparece una ventana superpuesta "¿Ya te
+  sumaste a nuestro canal?" con "Unirme al canal" y "Continuar con mi
+  pedido" (recién ese botón abre WhatsApp). La cruz, el fondo oscuro o
+  Escape vuelven al carrito sin enviar. Vacío = no aparece y el pedido va
+  directo. **Falta que Braccis pase el link.**
 - **Finalizar pedido**: pide el teléfono obligatorio y abre WhatsApp con
   el mensaje listo, dirigido al número de `js/config.js`:
   > Hola, mi teléfono es 11 5555-1234. Pedido: 1x Remera Somos · Talle M ·
