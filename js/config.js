@@ -62,7 +62,7 @@ const EMPRESA = {
   // "Finalizar pedido" se pregunta primero "¿Ya te sumaste a nuestro canal
   // de WhatsApp?". Vacio = no se pregunta y se va directo al pedido.
   // Tiene que empezar con https://whatsapp.com/channel/
-  canalWhatsapp: "",
+  canalWhatsapp: "https://whatsapp.com/channel/0029VbCMaEx0Qearpf44mm47",
 
   // Catalogo en PDF que se descarga desde el menu
   catalogoPdf: "docs/catalogo-braccis-pv2027.pdf",

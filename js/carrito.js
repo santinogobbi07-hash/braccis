@@ -339,7 +339,7 @@ const Carrito = (function () {
         '<button type="button" class="aviso-canal__cerrar" data-canal-cerrar aria-label="Cerrar y volver al carrito">&times;</button>' +
         '<p class="antetitulo">Canal de WhatsApp</p>' +
         '<h2 class="aviso-canal__titulo" id="aviso-canal-titulo">¿Ya te sumaste a nuestro canal?</h2>' +
-        '<p class="aviso-canal__texto" id="aviso-canal-texto">Sumate para enterarte de todas las novedades de Braccis.</p>' +
+        '<p class="aviso-canal__texto" id="aviso-canal-texto">Sumate y enterate primero de nuevos ingresos, promociones y oportunidades exclusivas.</p>' +
         '<div class="aviso-canal__acciones">' +
           '<a class="btn btn--wsp" data-canal-link href="#" target="_blank" rel="noopener">Unirme al canal</a>' +
           '<button type="button" class="btn btn--linea" data-canal-continuar>Continuar con mi pedido</button>' +
