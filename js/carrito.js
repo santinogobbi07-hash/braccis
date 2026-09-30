@@ -71,6 +71,15 @@ const Carrito = (function () {
     return i && producto(id) ? i.cantidad : 0;
   }
 
+  // Todas las variantes (talle + color) de una prenda que hay en el carrito,
+  // en el orden en que se agregaron. Cada combinacion aparece una sola vez:
+  // agregar() ya suma la cantidad si se repite el mismo talle y color.
+  function variantes(id) {
+    return vigentes()
+      .filter(function (i) { return i.id === id; })
+      .map(function (i) { return { talle: i.talle, color: i.color, cantidad: i.cantidad }; });
+  }
+
   function cambiarCantidad(indice, delta) {
     const i = vigentes()[indice];
     if (!i) return;
@@ -345,7 +354,7 @@ const Carrito = (function () {
     if (e.key === CLAVE) { items = leer(); dibujar(); }
   });
 
-  return { agregar: agregar, cuantas: cuantas, abrir: abrir, cerrar: cerrar, vaciar: vaciar,
+  return { agregar: agregar, cuantas: cuantas, variantes: variantes, abrir: abrir, cerrar: cerrar, vaciar: vaciar,
            armarMensaje: armarMensaje, cantidadTotal: cantidadTotal,
            estaListo: function () { return listo; } };
 })();

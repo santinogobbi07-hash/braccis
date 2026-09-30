@@ -418,11 +418,34 @@ function activarCompra(modal, p) {
     if (hayColores && !color) { aviso.textContent = "Elegí un color."; return; }
     if (typeof Carrito === "undefined") return;
     const agregadas = cantidad;
-    const total = Carrito.agregar(p.id, talle, color, agregadas);
-    aviso.textContent = "Listo, " + (agregadas === 1 ? "agregaste 1" : "agregaste " + agregadas) +
-      " al carrito." + (total > agregadas ? " Ahora tenés " + total + (detalleEleccion() ? " (" + detalleEleccion() + ")" : "") + "." : "");
+    Carrito.agregar(p.id, talle, color, agregadas);
+    mostrarCurva(aviso, agregadas, Carrito.variantes(p.id));
     ponerCantidad(1);
   });
+}
+
+/* Mensaje de "Listo" con la curva que se va armando de esta prenda:
+     Listo, agregaste 1 al carrito. Ahora tenés en total 2 de este artículo:
+     • 1x Talle M (Negro)
+     • 1x Talle XL (Mostaza)
+   Se arma con nodos de texto y <br> (nunca innerHTML): talles y colores
+   pueden venir del Google Sheets. Reusa el mismo <p class="ficha__aviso">. */
+function mostrarCurva(aviso, agregadas, variantes) {
+  const total = variantes.reduce(function (n, v) { return n + v.cantidad; }, 0);
+  aviso.textContent = "Listo, agregaste " + agregadas + " al carrito. " +
+    "Ahora tenés en total " + total + " de este artículo:";
+  variantes.forEach(function (v) {
+    aviso.appendChild(document.createElement("br"));
+    aviso.appendChild(document.createTextNode("• " + v.cantidad + "x " + nombreVariante(v)));
+  });
+}
+
+// "Talle M (Negro)", "Talle 28", "Color Negro" o "Único" si no tiene ninguno
+function nombreVariante(v) {
+  if (v.talle && v.color) return "Talle " + v.talle + " (" + v.color + ")";
+  if (v.talle) return "Talle " + v.talle;
+  if (v.color) return "Color " + v.color;
+  return "Único";
 }
 
 /* Al tocar una miniatura, cambia la foto grande de la ficha */
