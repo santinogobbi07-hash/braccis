@@ -15,6 +15,7 @@
 
    Pestaña "Ajustes" (clave | valor):
      video_portada | portada.mp4   (archivo de la carpeta video/ o link https)
+     catalogo_pdf  | enlace de Google Drive del PDF (vacio = docs/)
 
    El Sheet es publico y cualquiera con permiso de edicion lo cambia:
    todo lo que viene de ahi se valida aca y se escapa al mostrarse.
@@ -308,8 +309,33 @@ function ponerVideoPortada(valor) {
   if (intento && intento.catch) intento.catch(fallo);
 }
 
+/* ------------------------------------------------------------
+   Catalogo PDF desde la planilla (pestaña Ajustes, clave catalogo_pdf)
+   Braccis sube el PDF nuevo a su Google Drive, pega el enlace y todos
+   los botones "Catálogo PDF" del sitio pasan a abrir ese archivo. Vacio
+   = queda el PDF de docs/. Solo enlaces https (Drive u otro).
+   ------------------------------------------------------------ */
+function ponerCatalogoPdf(valor) {
+  const v = String(valor || "").trim();
+  if (!v) return;
+
+  let link = "";
+  const drive = v.match(/^https:\/\/(?:drive|docs)\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:[^#]*&)?id=)([\w-]{20,})/);
+  if (drive) link = "https://drive.google.com/file/d/" + drive[1] + "/view";
+  else if (/^https:\/\/[^\s"'<>\\]+$/i.test(v)) link = v;
+  if (!link) return;
+
+  document.querySelectorAll('a[href="' + EMPRESA.catalogoPdf + '"]').forEach(function (a) {
+    a.href = link;
+    a.removeAttribute("download");   // es otra pagina: se abre, no se descarga
+    a.target = "_blank";
+    a.rel = "noopener";
+  });
+}
+
 document.addEventListener("braccis:hoja-lista", function (e) {
   ponerVideoPortada((e.detail || {}).video_portada);
+  ponerCatalogoPdf((e.detail || {}).catalogo_pdf);
 });
 
 document.addEventListener("DOMContentLoaded", cargarHoja);

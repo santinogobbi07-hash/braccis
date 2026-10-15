@@ -214,6 +214,10 @@ La plantilla se puede regenerar con `node herramientas/armar_plantilla.js`.
   > Negro ($ 18.500), 1x Jeans Recto Kady · Talle 28 ($ 32.000). Total: $ 50.500
 - **No cobra**: el pago se arregla por WhatsApp.
 - **Video de portada**: ver `video/LEEME.txt`.
+- **Catálogo PDF desde la planilla**: en la pestaña **Ajustes**, fila
+  `catalogo_pdf`, se pega el enlace de Google Drive del PDF (compartido con
+  "Cualquier persona con el enlace"). Todos los botones "Catálogo PDF" pasan
+  a abrir ese archivo. Vacío = se usa el de `docs/`.
 - **Catálogo PDF**: `docs/catalogo-braccis-pv2027.pdf`, botón en el menú
   y en la página de catálogo. Con una colección nueva se regenera con
   `python herramientas/armar_pdf.py`.
