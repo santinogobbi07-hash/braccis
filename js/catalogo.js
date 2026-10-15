@@ -209,8 +209,10 @@ function abrirModal(id, opciones) {
     ? '<img src="' + esc(p.foto) + '" alt="' + esc(p.nombre) + '" data-foto-grande>'
     : '<div class="producto__placeholder">' + esc(p.nombre.charAt(0).toUpperCase()) + '</div>';
 
-  // Tira de miniaturas: la principal mas las fotos de los otros colores
-  const galeria = [p.foto].concat(p.galeria || []).filter(Boolean);
+  // Tira de miniaturas: la principal, las de la galeria y las fotos de
+  // cada color cargadas en la planilla (sin repetir)
+  const galeria = [p.foto].concat(p.galeria || [], fotoDeColor(p, null))
+    .filter(function (src, i, lista) { return src && lista.indexOf(src) === i; });
   const miniaturas = galeria.length > 1
     ? '<div class="miniaturas">' + galeria.map(function (src, i) {
         return '<button class="miniatura" data-src="' + esc(src) + '"' +
@@ -406,6 +408,7 @@ function activarCompra(modal, p) {
     b.addEventListener("click", function () {
       color = b.getAttribute("data-color");
       marcar("[data-color]", "data-color", color);
+      mostrarFotoDeColor(modal, fotoDeColor(p, color));
       avisarLasQueYaHay();
       avisarMayorista();
     });
@@ -446,6 +449,27 @@ function nombreVariante(v) {
   if (v.talle) return "Talle " + v.talle;
   if (v.color) return "Color " + v.color;
   return "Único";
+}
+
+/* Foto de la prenda en un color ("Negro" -> foto con la remera negra),
+   segun la columna fotos_color de la planilla. Con color null devuelve
+   todas las fotos de colores. Si ese color no tiene foto, devuelve "". */
+function fotoDeColor(p, color) {
+  const fotos = p.fotosColor || {};
+  if (color === null) return Object.keys(fotos).map(function (c) { return fotos[c]; });
+  return fotos[String(color || "").toLowerCase()] || "";
+}
+
+/* Pone esa foto como grande y marca su miniatura */
+function mostrarFotoDeColor(modal, src) {
+  const grande = modal.querySelector("[data-foto-grande]");
+  if (!src || !grande) return;
+  grande.src = src;
+  grande.style.visibility = "";
+  modal.querySelectorAll(".miniatura").forEach(function (b) {
+    if (b.dataset.src === src) b.setAttribute("aria-current", "true");
+    else b.removeAttribute("aria-current");
+  });
 }
 
 /* Al tocar una miniatura, cambia la foto grande de la ficha */

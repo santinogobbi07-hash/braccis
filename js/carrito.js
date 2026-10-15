@@ -247,7 +247,9 @@ const Carrito = (function () {
         faltanPrecios = true;
         precio = "Precio a confirmar";
       }
-      const foto = p.foto ? '<img src="' + esc(p.foto) + '" alt="" loading="lazy">' : "";
+      // Si ese color tiene su foto, el carrito muestra esa (la remera negra)
+      const src = (typeof fotoDeColor === "function" && fotoDeColor(p, i.color)) || p.foto;
+      const foto = src ? '<img src="' + esc(src) + '" alt="" loading="lazy">' : "";
       return '' +
         '<div class="carrito__item">' +
           '<div class="carrito__foto">' + foto + '</div>' +

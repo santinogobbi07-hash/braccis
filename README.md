@@ -150,6 +150,12 @@ desde un Google Sheets. **No hace falta tocar código.**
   de los carritos que la tenían guardada.
 - **Colores** (columna J): separados por coma, "Negro, Blanco". Los que ya
   tenían bolita del catálogo la conservan; los nuevos aparecen por nombre.
+- **Fotos por color** (columna K, `fotos_color`): "Color: foto", separados
+  por coma o uno por renglón. La foto como en la columna foto (nombre de
+  archivo o enlace de Drive). Al elegir ese color en la ficha cambia la
+  foto grande, y el carrito muestra esa foto. Se cargaron las 39 prendas
+  cuyas fotos muestran claramente el color; un color sin foto no cambia
+  la imagen.
 
 ### Cómo cargar una foto desde Google Drive
 

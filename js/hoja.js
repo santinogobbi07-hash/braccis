@@ -7,7 +7,7 @@
    tarda o falla, el visitante igual ve el catalogo.
 
    Pestaña "Productos" (una fila por prenda):
-     id | codigo | nombre | categoria | precio | foto | visible | talles | descripcion | colores
+     id | codigo | nombre | categoria | precio | foto | visible | talles | descripcion | colores | fotos_color
      - "id" identifica la prenda. Si no existe en productos.js, es nueva.
      - Prenda nueva: el id se deja vacio y se arma solo con el nombre.
      - Celda vacia = se deja el dato que ya estaba.
@@ -201,6 +201,21 @@ function aplicarFila(f) {
 
   if (f.talles) {
     p.talles = f.talles.split(/[,;]/).map(function (t) { return t.trim(); }).filter(Boolean);
+  }
+
+  // fotos_color: que foto mostrar al elegir cada color. Una por renglon o
+  // separadas por coma, cada una "Color: foto" (la foto como en la columna
+  // foto: nombre de archivo o enlace de Drive). Ej: "Negro: gio-3.jpg"
+  if (f.fotos_color) {
+    const fotos = {};
+    f.fotos_color.split(/\s*[\n,;]\s*/).forEach(function (par) {
+      const corte = par.indexOf(":");
+      if (corte < 1) return;
+      const color = par.slice(0, corte).trim().toLowerCase();
+      const foto = resolverFoto(par.slice(corte + 1));
+      if (color && !/^https?$/.test(color) && foto) fotos[color] = foto;
+    });
+    p.fotosColor = fotos;
   }
 
   // colores: "Negro, Blanco, Mostaza". Si un color ya tenia su muestra
