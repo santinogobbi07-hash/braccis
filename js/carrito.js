@@ -313,7 +313,7 @@ const Carrito = (function () {
     error.textContent = "";
 
     // Se frena el envio: si hay canal, primero el aviso; WhatsApp se abre
-    // recien cuando tocan "Continuar con mi pedido"
+    // recien cuando tocan "Finalizar pedido" en el aviso
     pedidoPendiente = { telefono: telefono, esMayorista: hayQueOfrecerMayorista() && mayorista };
     if (linkCanal()) abrirAvisoCanal();
     else enviarPedido();
@@ -344,12 +344,12 @@ const Carrito = (function () {
         '<p class="aviso-canal__texto" id="aviso-canal-texto">Sumate y enterate primero de nuevos ingresos, promociones y oportunidades exclusivas.</p>' +
         '<div class="aviso-canal__acciones">' +
           '<a class="btn btn--wsp" data-canal-link href="#" target="_blank" rel="noopener">Unirme al canal</a>' +
-          '<button type="button" class="btn btn--linea" data-canal-continuar>Continuar con mi pedido</button>' +
+          '<button type="button" class="btn btn--linea" data-canal-continuar>Finalizar pedido</button>' +
         '</div>' +
       '</div>';
     document.body.appendChild(aviso);
 
-    // "Continuar con mi pedido": recien aca se abre WhatsApp con el pedido
+    // "Finalizar pedido" del aviso: recien aca se abre WhatsApp con el pedido
     aviso.querySelector("[data-canal-continuar]").addEventListener("click", function () {
       cerrarAvisoCanal();
       enviarPedido();

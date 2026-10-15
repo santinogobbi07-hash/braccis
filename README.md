@@ -205,8 +205,7 @@ La plantilla se puede regenerar con `node herramientas/armar_plantilla.js`.
   `TIPO DE PEDIDO: MINORISTA` o `TIPO DE PEDIDO: MAYORISTA`.
 - **Canal de WhatsApp**: si `EMPRESA.canalWhatsapp` tiene el link del canal,
   al tocar "Finalizar pedido" aparece una ventana superpuesta "¿Ya te
-  sumaste a nuestro canal?" con "Unirme al canal" y "Continuar con mi
-  pedido" (recién ese botón abre WhatsApp). La cruz, el fondo oscuro o
+  sumaste a nuestro canal?" con "Unirme al canal" y "Finalizar pedido" (recién ese botón abre WhatsApp). La cruz, el fondo oscuro o
   Escape vuelven al carrito sin enviar. Vacío = no aparece y el pedido va
   directo. Conectado al canal BRACCIS JEANS.
 - **Finalizar pedido**: pide el teléfono obligatorio y abre WhatsApp con
