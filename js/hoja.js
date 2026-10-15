@@ -7,8 +7,9 @@
    tarda o falla, el visitante igual ve el catalogo.
 
    Pestaña "Productos" (una fila por prenda):
-     id | codigo | nombre | categoria | precio | foto | visible | talles | descripcion
+     id | codigo | nombre | categoria | precio | foto | visible | talles | descripcion | colores
      - "id" identifica la prenda. Si no existe en productos.js, es nueva.
+     - Prenda nueva: el id se deja vacio y se arma solo con el nombre.
      - Celda vacia = se deja el dato que ya estaba.
      - visible = "no" oculta la prenda.
 
@@ -129,6 +130,36 @@ function resolverFoto(valor) {
   return "";
 }
 
+/* "Remera Luna Nueva" -> "remera-luna-nueva" (sin tildes ni simbolos) */
+function armarId(nombre) {
+  return String(nombre || "")
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/* Las prendas nuevas se cargan sin id: se arma solo con el nombre, para
+   que quien carga la planilla no tenga que inventarlo. Si ya existe (otra
+   prenda con el mismo nombre), se le agrega -2, -3... Mientras no cambien
+   el nombre ni el orden de las filas, el id queda siempre igual (importa
+   para los carritos que ya la tienen guardada). */
+function completarIds(filas) {
+  const usados = {};
+  PRODUCTOS.forEach(function (p) { usados[p.id] = true; });
+  filas.forEach(function (f) { if (f.id) usados[f.id] = true; });
+  filas.forEach(function (f) {
+    if (f.id || !f.nombre) return;
+    const base = armarId(f.nombre);
+    if (!base) return;
+    let id = base;
+    for (let n = 2; usados[id]; n++) id = base + "-" + n;
+    usados[id] = true;
+    f.id = id;
+  });
+  return filas;
+}
+
 function categoriaDe(texto) {
   const t = texto.trim().toLowerCase();
   const c = CATEGORIAS.find(function (x) {
@@ -172,6 +203,17 @@ function aplicarFila(f) {
     p.talles = f.talles.split(/[,;]/).map(function (t) { return t.trim(); }).filter(Boolean);
   }
 
+  // colores: "Negro, Blanco, Mostaza". Si un color ya tenia su muestra
+  // (la bolita sacada del catalogo), se conserva; si es nuevo, va sin bolita.
+  if (f.colores) {
+    const antes = p.colores || [];
+    p.colores = f.colores.split(/[,;]/).map(function (c) { return c.trim(); }).filter(Boolean)
+      .map(function (nombre) {
+        const igual = antes.find(function (c) { return c.nombre.toLowerCase() === nombre.toLowerCase(); });
+        return { nombre: nombre, muestra: igual ? igual.muestra : "" };
+      });
+  }
+
   // visible: "si" se ve · "no" se oculta · "agotado" se ve con cartel y
   // sin poder comprarse (tambien acepta "sin stock")
   const visible = (f.visible || "").trim();
@@ -196,7 +238,7 @@ function cargarHoja() {
 
   if (EMPRESA.sheetProductos) {
     pedidos.push(traerCSV(EMPRESA.sheetProductos).then(function (texto) {
-      filasAObjetos(leerCSV(texto)).forEach(aplicarFila);
+      completarIds(filasAObjetos(leerCSV(texto))).forEach(aplicarFila);
     }).catch(function () { /* sin Sheet: quedan los datos locales */ }));
   }
 

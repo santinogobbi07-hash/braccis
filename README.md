@@ -143,9 +143,13 @@ desde un Google Sheets. **No hace falta tocar código.**
   **No borres la fila**: se pierden las fotos de colores y los datos.
 - **Celda vacía = queda lo que ya estaba.** Si no ponés precio, dice
   "Consultar precio".
-- **Prenda nueva**: agregá una fila con un `id` nuevo (sin espacios ni
-  acentos, por ejemplo `remera-luna`), y completá nombre, categoria, precio
-  y foto.
+- **Prenda nueva**: agregá una fila abajo de todo, **dejá el `id` vacío**
+  (se arma solo con el nombre: "Remera Luna" → `remera-luna`) y completá
+  nombre, categoria, precio, foto, visible, talles y colores. Sin nombre y
+  foto no aparece. Si después le cambian el nombre, cambia el id y se cae
+  de los carritos que la tenían guardada.
+- **Colores** (columna J): separados por coma, "Negro, Blanco". Los que ya
+  tenían bolita del catálogo la conservan; los nuevos aparecen por nombre.
 
 ### Cómo cargar una foto desde Google Drive
 
